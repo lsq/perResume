@@ -1,0 +1,109 @@
+version: 1.0.{build}
+image: Ubuntu1804
+environment:
+  TARGET_BRANCH:
+    secure: eQBPkReZ/mmjzNZaccrD3w==
+  GIT_USER_EMAIL:
+    secure: kM3mIK9xSLBAoq/mJ+oaO3KR0dvIrC0EcsfjrwmtacU=
+  GIT_USER_NAME:
+    secure: wX822g4t5xXPI86jW/Oy7g==
+    #secure: zt43vh97KFrDRrWr0I4KT435t2Qkqckh33yDFzyMUoJcWY0p+nJiLbt+b4egl34n
+    #secure: 855kciMXrCGEcKW+P87C5nMrvYN47FH/Zjz9yHjZ53yeijLyb6/0oZ4CVv7j0VbE
+  matrix:
+    - MSYS2_ARCH: x86_64
+      MSYSTEM: MINGW64
+ #   - MSYS2_ARCH: i686
+ #     MSYSTEM: MINGW32
+# Set path for msys
+init:
+  - pwd
+  - ls -al .
+  - set
+    # - copy setup.exe *.xml %APPVEYOR_JOB_ID%
+  # System upgrade (must be run twice, separately, to finalize). Disabled
+  # for now due to build time and resource usage (500MB bw, 2.7GB disk)
+  # - bash -lc "/usr/bin/env pacman --noconfirm -Syu"
+  # - bash -lc "/usr/bin/env pacman --noconfirm -Syu"
+
+# Fetch dependencies, build and run tests
+#clone_script:
+install:
+  - ls -al .
+  - pwd
+  - cygpath -w /home
+  - mkdir %APPVEYOR_JOB_ID%
+  - which curl
+  - curl -sOL https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12130-20272.exe
+  - ls -al
+  - 7z x officedeploymenttool_12130-20272.exe
+  - ls -al
+  - ls -al
+  - which ruby 
+  - ls -al
+    #- set
+    #  - which set
+    # - set
+    #- git config -l 
+    # - git config --global -l
+    #- cat ~/.git-credentials
+    #  - cmd: git clone --recursive  --branch=master https://github.com/lsq/blogsr.git C:\projects\blogsr
+
+  - git checkout master
+  - ls -al .
+  - ls -al .
+    #- cd ../../
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - df -h
+
+build_script:
+  - echo %path%
+  - ls -al .
+artifacts:
+  - path: \$(APPVEYOR_JOB_ID)
+    #- path: src-
+
+on_success:
+# https://cygwin.com/cygwin-ug-net/cygpath.html
+    - which git | cygpath -w -f -
+      #- which hugo | cygpath -w -f -
+    # bash -c "cp `which git | cygpath -w -f - | cygpath -u -f -` ."
+    #    - git config --global credential.helper store
+#    - echo %access_token%
+#    - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+#    - ps: dir "$env:USERPROFILE\.git-credentials"
+#    - ps: cat "$env:USERPROFILE\.git-credentials"
+#    - echo ------------
+#    - ls -al ~/
+    - cygpath -w /home
+#    - cat ~/.git-credentials
+#    - cp 
+#    - echo "%GIT_USER_EMAIL%"
+#    - echo "%GIT_USER_NAME%"
+#    - echo "$($env:GIT_USER_NAME)"
+#    - git config --global user.email "%GIT_USER_EMAIL%"
+#    - git config --global user.name "%GIT_USER_NAME%"
+#    - ps: cat ~/.gitconfig
+#    - ps: dir ~/.gitconfig
+#    - git config -l
+#    - git clone -q --branch=%TARGET_BRANCH% %STATIC_SITE_REPO% %TEMP%\static-site
+#    - cd %TEMP%\static-site
+    - ls -al .
+#    - del * /f /q
+#    - for /d %%p IN (*) do rmdir "%%p" /s /q
+#    - SETLOCAL EnableDelayedExpansion & robocopy "%APPVEYOR_BUILD_FOLDER%\public" "%TEMP%\static-site" /e & IF !ERRORLEVEL! EQU 1 (exit 0) ELSE (IF !ERRORLEVEL! EQU 3 (exit 0) ELSE (exit 1))
+#    - rm -rf *
+#    - ls -al .
+#    - ls "%APPVEYOR_BUILD_FOLDER%\public" 
+#    - cp -rf %APPVEYOR_BUILD_FOLDER%/public/* %TEMP%/static-site
+#    - SETLOCAL EnableDelayedExpansion & robocopy "%APPVEYOR_BUILD_FOLDER%\public" "%TEMP%\static-site" /e & IF !ERRORLEVEL! EQU 1 (exit 0) ELSE (IF !ERRORLEVEL! EQU 3 (exit 0) ELSE (exit 1))
+#    - cp -rf "%APPVEYOR_BUILD_FOLDER%\public\*" "%TEMP%\static-site"
+#    - ls -al .
+#    - bash '%APPVEYOR_BUILD_FOLDER%\appveyor_push.sh'
+#    - git status | grep "nothing to commit" & exit 0
+#    - pwd
+#    - git add -A
+#    - git config -l
+#    - git commit -m "Update Static Site"
+#    - echo %TARGET_BRANCH%
+#   - git push -u origin %TARGET_BRANCH%
+    - appveyor AddMessage "Static Site Updated"
