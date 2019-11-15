@@ -18,6 +18,14 @@ environment:
 init:
   - pwd
   - ls -al .
+  - sudo apt-get update
+  - sudo apt-get install -y autoconf automake autopoint autotools-dev libtool libxml2-dev libcppunit-dev
+  - wget https://dl.google.com/android/repository/android-ndk-r20-linux-x86_64.zip
+  - unzip -q android-ndk-r20-linux-x86_64.zip
+  - export ANDROID_NDK_HOME=`pwd`/android-ndk-r20
+  - export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+  - export SILENT=true
+
     #  - set
     # - copy setup.exe *.xml %APPVEYOR_JOB_ID%
   # System upgrade (must be run twice, separately, to finalize). Disabled
@@ -58,6 +66,7 @@ install:
 build_script:
   - echo %path%
   - ls -al .
+  - bash -x aria_build.sh
 artifacts:
   - path: $APPVEYOR_JOB_ID
     #- path: src-
