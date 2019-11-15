@@ -6,4 +6,4 @@ cd  aria2-android
 ls -al
 
 ./build_all.sh
-cp -rf ./bin    $APPVEYOR_JOB_ID/aria2-android
+cp -rf ./bin    ../$APPVEYOR_JOB_ID/aria2-android
