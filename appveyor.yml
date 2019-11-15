@@ -18,7 +18,7 @@ environment:
 init:
   - pwd
   - ls -al .
-  - set
+    #  - set
     # - copy setup.exe *.xml %APPVEYOR_JOB_ID%
   # System upgrade (must be run twice, separately, to finalize). Disabled
   # for now due to build time and resource usage (500MB bw, 2.7GB disk)
@@ -30,8 +30,8 @@ init:
 install:
   - ls -al .
   - pwd
-  - cygpath -w /home
-  - mkdir %APPVEYOR_JOB_ID%
+  - mkdir $APPVEYOR_JOB_ID
+  - set >$APPVEYOR_JOB_ID/env.txt
   - which curl
   - curl -sOL https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12130-20272.exe
   - ls -al
@@ -52,14 +52,14 @@ install:
   - ls -al .
   - ls -al .
     #- cd ../../
-  - cd %APPVEYOR_BUILD_FOLDER%
+  - cd $APPVEYOR_BUILD_FOLDER
   - df -h
 
 build_script:
   - echo %path%
   - ls -al .
 artifacts:
-  - path: \$(APPVEYOR_JOB_ID)
+  - path: $APPVEYOR_JOB_ID
     #- path: src-
 
 on_success:
