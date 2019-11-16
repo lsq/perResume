@@ -16,8 +16,12 @@ basename() {
 iso_install(){
   creat_profile
   wget -c -o texlive.iso $1
-  sudo mount -t iso9660 -o ro,loop,noauto ./texlive.iso /mnt
+  [ ! -f texlive.iso ] && exit 1
+  file texlive.iso
+  #sudo mount -t iso9660 -o ro,loop,noauto ./texlive.iso /mnt
+  sudo mount texlive.iso /mnt
   cd /mnt
+  ls -al
   sudo ./install-tl -profile $APPVEYOR_BUILD_FOLDER/install_texlive.profile
 }
 
@@ -44,9 +48,7 @@ install_texlive(){
 echo "====================="
 echo "begin install........"
 #net_install http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-#iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
-ls /
-ls /mnt
+iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
 cat $APPVEYOR_BUILD_FOLDER/install_texlive.profile
 pwd
 ls -al
