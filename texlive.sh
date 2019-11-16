@@ -27,7 +27,7 @@ install_texlive(){
   [ -n "$tar_file" ] && download_source $sr_url
   #local sr_dir=$(basename "$tar_file" .tar.gz)
   [ -f "$tar_file" ] && local sr_dir=$(tar tf "$tar_file" | head -1)
-  [ $? -ne 0 -o -n "$sr_dir" ] && exit 1
+  [ $? -ne 0 -o -z "$sr_dir" ] && exit 1
   tar xf "$tar_file" && cd "$sr_dir"
   creat_profile
   ./install-tl -profile install_texlive.profile
