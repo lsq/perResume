@@ -19,14 +19,17 @@ creat_profile(){
   touch install_texlive.profile
 }
 download_source(){
+  wget -c "$1"
 }
 install_texlive(){
   local sr_url="$1"
   local tar_file="${sr_url##*/}"
+  [ -n "$tar_file" ] && download_source $sr_url
   #local sr_dir=$(basename "$tar_file" .tar.gz)
   [ -f "$tar_file" ] && local sr_dir=$(tar tf "$tar_file" | head -1)
   [ $? -ne 0 -o -n "$sr_dir" ] && exit 1
   tar xf "$tar_file" && cd "$sr_dir"
+  creat_profile
   ./install-tl -profile install_texlive.profile
   cat tlpkg/texlive.profile
 }
