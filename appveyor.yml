@@ -69,7 +69,7 @@ build_script:
   - echo $PATH
   - ls -al .
     #- bash -x aria_build.sh
-    #- bash -x texlive.sh
+  - bash -x texlive.sh
 artifacts:
   - path: $APPVEYOR_JOB_ID
     #- path: src-
