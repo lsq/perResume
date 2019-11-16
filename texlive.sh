@@ -52,8 +52,10 @@ iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
 cat $APPVEYOR_BUILD_FOLDER/install_texlive.profile
 pwd
 ls -al
-cat tlpkg/texlive.profile 
-ls -al /usr/local/texlive/2019/bin/x86_64-linux
+[ -e tlpkg/texlive.profile ] && cat tlpkg/texlive.profile 
+cd /usr/local/texlive/2019/
+ls -al
+[ -e tlpkg/texlive.profile ] && cat tlpkg/texlive.profile 
 
 # Add /usr/local/texlive/2019/texmf-dist/doc/man to MANPATH.
 # Add /usr/local/texlive/2019/texmf-dist/doc/info to INFOPATH.
