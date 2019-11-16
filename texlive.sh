@@ -88,7 +88,7 @@ sudo mkfontdir
 sudo fc-cache -fv
 #cat cv-zh.tex
 xelatex cv-zh.tex
-cp cv-zh.pdf $APPVEYOR_JOB_ID/
+cp cv-zh.pdf $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/
 sleep 1
 
 #sudo mock -r xxxx-v5.05-x86_64 --rebuild kernel-3.10.0-957.1.3.el7.xxxx.gd2389d1.src.rpm --no-clean --no-cleanup-after
