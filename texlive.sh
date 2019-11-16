@@ -44,7 +44,9 @@ install_texlive(){
 echo "====================="
 echo "begin install........"
 #net_install http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
+#iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
+ls /
+ls /mnt
 cat $APPVEYOR_BUILD_FOLDER/install_texlive.profile
 pwd
 ls -al
