@@ -61,7 +61,7 @@ iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
 echo "====================="
 end_time=$(date +%s)
 cost_time=$((end_time-start_time))
-echo "installed use $((cost_time/60))min $((cost_time%60))"
+echo "installed use $((cost_time/60))min $((cost_time%60))s"
 
 # Add /usr/local/texlive/2019/texmf-dist/doc/man to MANPATH.
 # Add /usr/local/texlive/2019/texmf-dist/doc/info to INFOPATH.
