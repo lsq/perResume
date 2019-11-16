@@ -36,7 +36,6 @@ init:
 # Fetch dependencies, build and run tests
 #clone_script:
 install:
-  - ls -al .
   - pwd
   - mkdir $APPVEYOR_JOB_ID
   - sudo apt-get update
@@ -51,7 +50,7 @@ install:
     # - ls -al
   - ls -al
   - which ruby 
-  - ls -al
+  - ruby -v
     #- set
     #  - which set
     # - set
@@ -61,7 +60,6 @@ install:
     #  - cmd: git clone --recursive  --branch=master https://github.com/lsq/blogsr.git C:\projects\blogsr
 
   - git checkout master
-  - ls -al .
   - ls -al .
     #- cd ../../
   - cd $APPVEYOR_BUILD_FOLDER
