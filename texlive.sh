@@ -22,7 +22,7 @@ iso_install(){
   sudo mount texlive.iso /mnt
   cd /mnt
   ls -al
-  sudo ./install-tl -profile $APPVEYOR_BUILD_FOLDER/install_texlive.profile
+  sudo ./install-tl -q -profile $APPVEYOR_BUILD_FOLDER/install_texlive.profile
 }
 
 ### for network install
@@ -41,7 +41,7 @@ install_texlive(){
   [ -f "$tar_file" ] && local sr_dir=$(tar tf "$tar_file" | head -1)
   [ $? -ne 0 -o -z "$sr_dir" ] && exit 1
   tar xf "$tar_file" && cd "$sr_dir"
-  sudo ./install-tl -profile install_texlive.profile
+  sudo ./install-tl -q -profile install_texlive.profile
 }
 
 # https://mirror.bjtu.edu.cn/ctan/systems/texlive/tlnet/tlpkg/
@@ -52,6 +52,7 @@ iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
 cat $APPVEYOR_BUILD_FOLDER/install_texlive.profile
 pwd
 ls -al
+cat tlpkg/texlive.profile 
 ls -al /usr/local/texlive/2019/bin/x86_64-linux
 
 # Add /usr/local/texlive/2019/texmf-dist/doc/man to MANPATH.
