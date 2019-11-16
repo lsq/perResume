@@ -7,6 +7,9 @@ environment:
     secure: kM3mIK9xSLBAoq/mJ+oaO3KR0dvIrC0EcsfjrwmtacU=
   GIT_USER_NAME:
     secure: wX822g4t5xXPI86jW/Oy7g==
+  TEX_KEY:
+    secure: V6as8a77xjng+RBnWYjvAw==
+
     #secure: zt43vh97KFrDRrWr0I4KT435t2Qkqckh33yDFzyMUoJcWY0p+nJiLbt+b4egl34n
     #secure: 855kciMXrCGEcKW+P87C5nMrvYN47FH/Zjz9yHjZ53yeijLyb6/0oZ4CVv7j0VbE
   matrix:

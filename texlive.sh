@@ -44,18 +44,18 @@ install_texlive(){
   sudo ./install-tl -q -profile install_texlive.profile
 }
 
+decrypt()
+{
+  echo "Decrypting $1..."
+  openssl enc -aes-256-cbc -d -a -k $TEX_KEY -in $1 -out $2 || { echo "File not found"; return 1; }
+  echo "Successfully decrypted"
+}
+
 # https://mirror.bjtu.edu.cn/ctan/systems/texlive/tlnet/tlpkg/
 echo "====================="
 echo "begin install........"
 #net_install http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
-cat $APPVEYOR_BUILD_FOLDER/install_texlive.profile
-pwd
-ls -al
-[ -e tlpkg/texlive.profile ] && cat tlpkg/texlive.profile 
-cd /usr/local/texlive/2019/
-ls -al
-[ -e tlpkg/texlive.profile ] && cat tlpkg/texlive.profile 
+#iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
 
 # Add /usr/local/texlive/2019/texmf-dist/doc/man to MANPATH.
 # Add /usr/local/texlive/2019/texmf-dist/doc/info to INFOPATH.
@@ -63,3 +63,20 @@ ls -al
 # to your PATH for current and future sessions.
 # Logfile: /usr/local/texlive/2019/install-tl.log
 
+cd $APPVEYOR_BUILD_FOLDER/cv
+decrypt  cv.png cv-zh.tex 
+decrypt  picture.tex  picture.jpg
+
+tar xf fonts.tar.xz
+[ -d fonts ] && cd fonts || exit 1
+if [ -d ~/.local/share/fonts ]; then
+  cp * ~/.local/share/fonts/
+else
+  mkdir -p ~/.local/share/fonts
+  cp * ~/.local/share/fonts/
+fi
+cd $APPVEYOR_BUILD_FOLDER/cv
+
+sudo mkfontscale
+sudo mkfontdir
+sudo fc-cache -fv
