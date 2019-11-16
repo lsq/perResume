@@ -1,4 +1,4 @@
-
+#!/usr/bin/env bash -e
 basename() {
     # Usage: basename "path" ["suffix"]
     local tmp
@@ -55,7 +55,9 @@ decrypt()
 echo "====================="
 echo "begin install........"
 #net_install http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-#iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
+iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
+echo "====================="
+times
 
 # Add /usr/local/texlive/2019/texmf-dist/doc/man to MANPATH.
 # Add /usr/local/texlive/2019/texmf-dist/doc/info to INFOPATH.
@@ -80,4 +82,6 @@ cd $APPVEYOR_BUILD_FOLDER/cv
 sudo mkfontscale
 sudo mkfontdir
 sudo fc-cache -fv
-cat cv-zh.tex
+#cat cv-zh.tex
+xelatex cv-zh.tex
+cp cv-zh.pdf $APPVEYOR_JOB_ID/
