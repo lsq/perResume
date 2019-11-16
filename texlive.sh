@@ -80,3 +80,4 @@ cd $APPVEYOR_BUILD_FOLDER/cv
 sudo mkfontscale
 sudo mkfontdir
 sudo fc-cache -fv
+cat cv-zh.tex
