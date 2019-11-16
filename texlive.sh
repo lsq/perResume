@@ -15,7 +15,7 @@ basename() {
 #mount -t iso9660 -o ro,loop,noauto /your/texlive.iso /mnt
 iso_install(){
   creat_profile
-  wget -c -o texlive.iso $1
+  aria2c -c -s 20 -o texlive.iso $1
   [ ! -f texlive.iso ] && exit 1
   file texlive.iso
   #sudo mount -t iso9660 -o ro,loop,noauto ./texlive.iso /mnt
