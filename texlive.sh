@@ -30,8 +30,7 @@ install_texlive(){
   [ $? -ne 0 -o -z "$sr_dir" ] && exit 1
   tar xf "$tar_file" && cd "$sr_dir"
   creat_profile
-  ./install-tl -profile install_texlive.profile
-  cat tlpkg/texlive.profile
+  sudo ./install-tl -profile install_texlive.profile && cat tlpkg/texlive.profile
 }
 
 # https://mirror.bjtu.edu.cn/ctan/systems/texlive/tlnet/tlpkg/
