@@ -18,6 +18,13 @@ environment:
 init:
   - pwd
   - ls -al .
+  - export MANPATH=/usr/local/texlive/2019/texmf-dist/doc/man:$MANPATH
+  - export INFOPATH=/usr/local/texlive/2019/texmf-dist/doc/info:$INFOPATH
+  - export PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH
+  - export ANDROID_NDK_HOME=~/android-ndk-r20
+  - export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+  - export SILENT=true
+
 
     #  - set
     # - copy setup.exe *.xml %APPVEYOR_JOB_ID%
@@ -36,15 +43,12 @@ install:
   - sudo apt-get install -y autoconf automake autopoint autotools-dev libtool libxml2-dev libcppunit-dev
     #  - wget https://dl.google.com/android/repository/android-ndk-r20-linux-x86_64.zip
     #  - unzip -q android-ndk-r20-linux-x86_64.zip
-  - export ANDROID_NDK_HOME=`pwd`/android-ndk-r20
-  - export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-  - export SILENT=true
   - set >$APPVEYOR_JOB_ID/env.txt
   - which curl
-  - curl -sOL https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12130-20272.exe
-  - ls -al
-  - 7z x officedeploymenttool_12130-20272.exe
-  - ls -al
+    # - curl -sOL https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12130-20272.exe
+    # - ls -al
+    # - 7z x officedeploymenttool_12130-20272.exe
+    # - ls -al
   - ls -al
   - which ruby 
   - ls -al
@@ -64,10 +68,10 @@ install:
   - df -h
 
 build_script:
-  - echo %path%
+  - echo $PATH
   - ls -al .
     #- bash -x aria_build.sh
-  - bash -x texlive.sh
+    #- bash -x texlive.sh
 artifacts:
   - path: $APPVEYOR_JOB_ID
     #- path: src-

@@ -30,10 +30,17 @@ install_texlive(){
   [ $? -ne 0 -o -z "$sr_dir" ] && exit 1
   tar xf "$tar_file" && cd "$sr_dir"
   creat_profile
-  sudo ./install-tl -profile install_texlive.profile && cat tlpkg/texlive.profile
+  sudo ./install-tl -profile install_texlive.profile
 }
 
 # https://mirror.bjtu.edu.cn/ctan/systems/texlive/tlnet/tlpkg/
 echo "====================="
 echo "begin install........"
 install_texlive http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+
+# Add /usr/local/texlive/2019/texmf-dist/doc/man to MANPATH.
+# Add /usr/local/texlive/2019/texmf-dist/doc/info to INFOPATH.
+# Most importantly, add /usr/local/texlive/2019/bin/x86_64-linux
+# to your PATH for current and future sessions.
+# Logfile: /usr/local/texlive/2019/install-tl.log
+
