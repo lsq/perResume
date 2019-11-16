@@ -1,4 +1,5 @@
 #!/usr/bin/env bash -e
+
 basename() {
     # Usage: basename "path" ["suffix"]
     local tmp
@@ -55,9 +56,12 @@ decrypt()
 echo "====================="
 echo "begin install........"
 #net_install http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+start_time=$(date +%s)
 iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
 echo "====================="
-times
+end_time=$(date +%s)
+cost_time=$((end_time-start_time))
+echo "installed use $((cost_time/60))min $((cost_time%60))"
 
 # Add /usr/local/texlive/2019/texmf-dist/doc/man to MANPATH.
 # Add /usr/local/texlive/2019/texmf-dist/doc/info to INFOPATH.
@@ -85,3 +89,7 @@ sudo fc-cache -fv
 #cat cv-zh.tex
 xelatex cv-zh.tex
 cp cv-zh.pdf $APPVEYOR_JOB_ID/
+sleep 1
+
+#sudo mock -r xxxx-v5.05-x86_64 --rebuild kernel-3.10.0-957.1.3.el7.xxxx.gd2389d1.src.rpm --no-clean --no-cleanup-after
+
