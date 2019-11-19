@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<title>shell中常用的变量处理、字符串操作</title>
+<meta name="description" content="这篇文章详细的介绍了shell常见的变量操作、字符串操作。结合示例，更加一目了然。" />
+<meta name="keywords" content="shell变量值处理,shell变量值操作,shell字符串处理,shell字符串操作,shell中变量为空时对变量赋值,shell中变量为空或非空时对变量进行操作,shell中变量为空或非空时指定返回值,shell替换变量值中的字符串,shell替换字符串中的字符串,shell删除变量值中的字符串,shell删除字符串中的字符串,shell删除字符串,shell替换字符串,shell获取字符串长度,shell获取变量长度,shell截取变量的几种方法,shell截取字符串的几种方法,shell掐头去尾截取变量,shell掐头去尾截取字符串,shell获取目录名" />
+<link rel="shortcut icon" href="http://www.zsythink.net/wp-content/uploads/2016/12/xd.jpg">
+<link rel="apple-touch-icon" sizes="114x114" href="http://www.zsythink.net/wp-content/uploads/2016/12/xd.jpg" />
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="http://www.zsythink.net/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="http://www.zsythink.net/wp-content/themes/begin/js/html5.js"></script>
+<script src="http://www.zsythink.net/wp-content/themes/begin/js/css3-mediaqueries.js"></script>
+<![endif]-->
+<link rel='stylesheet' id='crayon-css'  href='//www.zsythink.net/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=_2.7.2_beta' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-familiar-css'  href='//www.zsythink.net/wp-content/plugins/crayon-syntax-highlighter/themes/familiar/familiar.css?ver=_2.7.2_beta' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-verdana-css'  href='//www.zsythink.net/wp-content/plugins/crayon-syntax-highlighter/fonts/verdana.css?ver=_2.7.2_beta' type='text/css' media='all' />
+<link rel='stylesheet' id='begin-style-css'  href='//www.zsythink.net/wp-content/themes/begin/style.css?ver=4.5' type='text/css' media='all' />
+<link rel='stylesheet' id='fonts-css'  href='//www.zsythink.net/wp-content/themes/begin/css/fonts.css?ver=2017.05.04' type='text/css' media='all' />
+<link rel='stylesheet' id='highlight-css'  href='//www.zsythink.net/wp-content/themes/begin/css/highlight.css?ver=2017.05.04' type='text/css' media='all' />
+<link rel='stylesheet' id='dw-css'  href='//www.zsythink.net/wp-content/themes/begin/css/dw.css?ver=2017.05.04' type='text/css' media='all' />
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/jquery.min.js?ver=1.10.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"http:\/\/www.zsythink.net\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"\u4f7f\u7528 %s \u590d\u5236\uff0c\u4f7f\u7528 %s \u7c98\u8d34\u3002","minimize":"\u70b9\u51fb\u5c55\u5f00\u4ee3\u7801"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.min.js?ver=_2.7.2_beta'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/slides.js?ver=2017.05.04'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/jquery.qrcode.min.js?ver=2017.05.04'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/wow.js?ver=0.1.9'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/sticky.js?ver=1.6.0'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/jquery-ias.js?ver=2.2.1'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/jquery.lazyload.js?ver=2017.05.04'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/tipso.js?ver=1.0.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpl_ajax_url = "http:\/\/www.zsythink.net\/wp-admin\/admin-ajax.php";
+/* ]]> */
+</script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/script.js?ver=2017.05.04'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/flexisel.js?ver=2017.05.04'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/fancybox.js?ver=2017.05.04'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/comments-ajax.js?ver=2017.05.04'></script>
+<link rel="canonical" href="http://www.zsythink.net/archives/2311" />
+<!--
+This site is protected by WP-CopyRightPro
+Copyright 2010  Wp-CopyRightPro, IN  (http://wp-copyrightpro.com/)
+-->
+
+<!-- EVITAR CLICK DERECHO-->
+<script language="Javascript">
+<!-- Begin
+document.oncontextmenu = function(){return false}
+// End -->
+</script>
+
+<!-- SELECCION DE TEXTO-->
+<script type="text/javascript">
+// IE Evitar seleccion de texto
+document.onselectstart=function(){
+if (event.srcElement.type != "text" && event.srcElement.type != "textarea" && event.srcElement.type != "password")
+return false
+else return true;
+};
+
+// FIREFOX Evitar seleccion de texto
+if (window.sidebar){
+document.onmousedown=function(e){
+var obj=e.target;
+if (obj.tagName.toUpperCase() == "INPUT" || obj.tagName.toUpperCase() == "TEXTAREA" || obj.tagName.toUpperCase() == "PASSWORD")
+return true;
+/*else if (obj.tagName=="BUTTON"){
+return true;
+}*/
+else
+return false;
+}
+}
+// End -->
+</script>
+
+
+<!-- EVITAR IFRAME-->
+<script type="text/javascript" language="JavaScript1.1">
+<!--// evito que se cargue en otro frame
+if (parent.frames.length > 0) top.location.replace(document.location);
+//-->
+</script>
+
+
+<!-- EVITAR DRAG AND DROP-->
+<script language="Javascript">
+<!--// Begin
+document.ondragstart = function(){return false}
+//-->
+</script>
+<script type="text/javascript" src="http://www.zsythink.net/wp-content/plugins/ueditor/ueditor/third-party/SyntaxHighlighter/shCore.js"></script><link type="text/css" rel="stylesheet" href=" http://www.zsythink.net/wp-content/plugins/ueditor/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css" /><style>#content, .header-sub, .top-nav, #top-menu, #mobile-nav, #main-search, #search-main, .breadcrumb, .footer-widget, .links-box {width: 1200px;}@media screen and (max-width: 1200px) {#content, .breadcrumb, .footer-widget, .links-box {width: 98%;}#top-menu{width: 98%;}.top-nav {width: 98%;}#main-search, #search-main, #mobile-nav, .header-sub {width: 98%;}.breadcrumb {width: 98%;}}</style><style>
+a:hover,.top-menu a:hover,.show-more span,.cat-box .icon-cat,.single-content a,.single-content a:visited,#site-nav .down-menu > .current-menu-item > a,.entry-meta a,#site-nav .down-menu > .current-menu-item > a:hover,#site-nav .down-menu > li > a:hover,#site-nav .down-menu > li.sfHover > a, .cat-title .fa-bars,.widget-title .fa-bars,.at, .at a,#user-profile a:hover,#comments .fa-exclamation-circle, #comments .fa-check-square, #comments .fa-spinner, #comments .fa-pencil-square-o, .zm-tabs-nav .current .fa, .tab-recent .fa {color: #c40000;}
+.sf-arrows > li > .sf-with-ul:focus:after,.sf-arrows > li:hover > .sf-with-ul:after,.sf-arrows > .sfHover > .sf-with-ul:after{border-top-color: #c40000;}
+.thumbnail .cat,.format-cat,.format-img-cat {background: #c40000;opacity: 0.8;}
+#login h1 a,.format-aside .post-format a,#searchform button,.li-icon-1,.li-icon-2,.li-icon-3,.new-icon, .title-l,.buttons a, .li-number, .post-format, .searchbar button {background: #c40000;}
+.entry-more a, .qqonline a, #login input[type='submit'], .log-zd {background: #c40000;}
+.entry-more a {	right: -1px;}
+.entry-more a:hover {color: #fff;background: #595959;}
+.entry-direct a:hover, #respond input[type='text']:focus, #respond textarea:focus {border: 1px solid #c40000;}
+#down a,.page-links span,.reply a:hover,.widget_categories a:hover,.widget_links a:hover,#respond #submit:hover,.callbacks_tabs .callbacks_here a,#gallery .callbacks_here a,#fontsize:hover,.single-meta li a:hover,.meta-nav:hover,.nav-single i:hover, .widget_categories a:hover, .widget_links a:hover, .tagcloud a:hover, #sidebar .widget_nav_menu a:hover, .gr-cat-title a, .group-tab-hd .group-current, .img-tab-hd .img-current {background: #c40000;border: 1px solid #c40000;}
+.comment-tool a, .link-all a:hover, .link-f a:hover, .ias-trigger-next a:hover, .type-cat a:hover, .type-cat a:hover, .child-cat a:hover {background: #c40000;border: 1px solid #c40000;}
+#site-nav .down-menu > .current-menu-item > a, #site-nav .down-menu > .current-menu-item > a:hover,.deanm .deanm-main a {background: #c40000;}
+.entry-header h1 {border-left: 5px solid #c40000;border-right: 5px solid #c40000;}
+.slider-caption, .grid,icon-zan, .grid-cat, .entry-title-img, .header-sub h1 {background: #c40000;opacity: 0.9;}
+@media screen and (min-width: 900px) {#scroll li a:hover, .nav-search {background: #c40000;border: 1px solid #c40000;}.custom-more a, .cat-more a,.author-m a {background: #c40000;}}
+@media screen and (max-width: 900px) {#navigation-toggle:hover,.nav-search:hover,.mobile-login a:hover,.nav-mobile:hover, {color: #c40000;}}
+@media screen and (min-width: 550px) {.pagination span.current, .pagination a:hover {background: #c40000;border: 1px solid #c40000;}}
+@media screen and (max-width: 550px) {.pagination .prev,.pagination .next {background: #c40000;}}
+.single-content h3, .single-content .directory {border-left: 5px solid #c40000;}
+.resp-vtabs li.resp-tab-active {border-left: 2px solid #c40000  !important;}
+.page-links  a:hover span {background: #a3a3a3;border: 1px solid #a3a3a3;}
+.single-content a:hover {color: #555;}
+.format-aside .post-format a:hover,.cat-more a:hover,.custom-more a:hover {color: #fff;}</style><style>#site-nav .down-menu li {font-weight: normal;font-size:15px;}
+#site-nav .down-menu li a {color: #0E95C2;}
+#site-nav .down-menu a {padding: 0 15px;color: #444;text-align: left;}
+
+#menu-box {  background: rgba(0, 0, 0, 1); } 
+#top-menu { background: rgba(255,255,255,1); }
+
+
+
+
+.single #primary {
+    width: 100%;
+}
+.single #sidebar, .r-hide {
+    display: none;
+}
+
+.single-content img{margin: 0 auto;}
+
+.single-content p {text-indent: 0;}
+
+.single-meta .print{display:none;}
+.mail-notify{display:none;}
+
+.single-content {
+	font-size: 15px;
+	font-size: 1.5rem;
+	line-height: 1.7;
+}
+
+</style><base target="_blank">
+</head>
+<body class="single single-post postid-2311 single-format-standard">
+<div id="page" class="hfeed site">
+	<header id="masthead" class="site-header">
+
+	<nav id="top-header">
+		<div class="top-nav">
+			
+			<div class="menu-%e9%a1%b6%e9%83%a8%e8%8f%9c%e5%8d%95-container"><ul id="menu-%e9%a1%b6%e9%83%a8%e8%8f%9c%e5%8d%95" class="top-menu"><li id="menu-item-1821" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1821"><a target="_blank" href="http://www.zsythink.net/about"><i class="fa-info fa"></i><span class="font-text">关于</span></a></li>
+<li id="menu-item-1829" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1829"><a target="_blank" href="http://www.zsythink.net/archives/1826"><i class="fa-commenting-o fa"></i><span class="font-text">留言板</span></a></li>
+<li id="menu-item-1807" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1807"><a target="_blank" href="http://www.zsythink.net/flinks"><i class="fa-link fa"></i><span class="font-text">友情链接</span></a></li>
+</ul></div>		</div>
+	</nav><!-- #top-header -->
+
+	<div id="menu-box">
+		<div id="top-menu">
+			<span class="nav-search"><i class="fa fa-search"></i></span>
+									<div class="logo-sites">
+																		<p class="site-title">
+															<a href="http://www.zsythink.net/"><img src="http://www.zsythink.net/wp-content/uploads/2016/12/logoall.bmp" title="朱双印博客" alt="朱双印博客" rel="home" /><span class="site-name">朱双印博客</span></a>
+													</p>
+													</div><!-- .logo-site -->
+
+			<div id="site-nav-wrap">
+				<div id="sidr-close"><a href="#sidr-close" class="toggle-sidr-close">×</a></div>
+				<nav id="site-nav" class="main-nav">
+															<a href="#sidr-main" id="navigation-toggle" class="bars"><i class="fa fa-bars"></i></a>
+														<div class="menu-%e5%af%bc%e8%88%aa%e8%8f%9c%e5%8d%95-container"><ul id="menu-%e5%af%bc%e8%88%aa%e8%8f%9c%e5%8d%95" class="down-menu nav-menu"><li id="menu-item-145" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-145"><a target="_blank" href="http://www.zsythink.net"><i class="fa-home fa"></i><span class="font-text">主页</span></a></li>
+<li id="menu-item-146" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-146"><a target="_blank" href="http://www.zsythink.net/archives/category/linuxbase/"><i class="fa-diamond fa"></i><span class="font-text">Linux基础</span></a>
+<ul class="sub-menu">
+	<li id="menu-item-147" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-147"><a target="_blank" href="http://www.zsythink.net/archives/category/linuxbase/linux%e5%9f%ba%e7%a1%80/">基础知识</a></li>
+	<li id="menu-item-148" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-148"><a target="_blank" href="http://www.zsythink.net/archives/category/linuxbase/%e5%9f%ba%e7%a1%80%e5%91%bd%e4%bb%a4/">常用命令</a></li>
+</ul>
+</li>
+<li id="menu-item-180" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-180"><a target="_blank" href="http://www.zsythink.net/archives/category/%e8%bf%90%e7%bb%b4%e7%9b%b8%e5%85%b3/"><i class="fa-wrench fa"></i><span class="font-text">运维技术</span></a>
+<ul class="sub-menu">
+	<li id="menu-item-2141" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2141"><a href="http://www.zsythink.net/archives/category/%e8%bf%90%e7%bb%b4%e7%9b%b8%e5%85%b3/iptables/">IPtables</a></li>
+	<li id="menu-item-2534" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2534"><a href="http://www.zsythink.net/archives/category/%e8%bf%90%e7%bb%b4%e7%9b%b8%e5%85%b3/ansible/">Ansible</a></li>
+	<li id="menu-item-1133" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1133"><a href="http://www.zsythink.net/archives/category/%e8%bf%90%e7%bb%b4%e7%9b%b8%e5%85%b3/puppet/">Puppet</a></li>
+	<li id="menu-item-1132" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1132"><a href="http://www.zsythink.net/archives/category/%e8%bf%90%e7%bb%b4%e7%9b%b8%e5%85%b3/zabbix/">Zabbix</a></li>
+	<li id="menu-item-2137" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2137"><a href="http://www.zsythink.net/archives/category/%e8%bf%90%e7%bb%b4%e7%9b%b8%e5%85%b3/linux-virtual-server/">LVS</a></li>
+	<li id="menu-item-2208" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2208"><a href="http://www.zsythink.net/archives/category/%e8%bf%90%e7%bb%b4%e7%9b%b8%e5%85%b3/http/">Http</a></li>
+	<li id="menu-item-3179" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3179"><a href="http://www.zsythink.net/archives/category/%e8%bf%90%e7%bb%b4%e7%9b%b8%e5%85%b3/nginx/">Nginx</a></li>
+</ul>
+</li>
+<li id="menu-item-149" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-149"><a target="_blank" href="http://www.zsythink.net/archives/category/%e5%ad%98%e5%82%a8/"><i class="fa-database fa"></i><span class="font-text">数据库</span></a>
+<ul class="sub-menu">
+	<li id="menu-item-150" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-150"><a target="_blank" href="http://www.zsythink.net/archives/category/%e5%ad%98%e5%82%a8/mysql/">Mysql</a></li>
+</ul>
+</li>
+<li id="menu-item-151" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-151"><a target="_blank" href="http://www.zsythink.net/archives/category/%e5%bc%80%e5%8f%91/"><i class="fa-code fa"></i><span class="font-text">编程</span></a>
+<ul class="sub-menu">
+	<li id="menu-item-152" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-152"><a target="_blank" href="http://www.zsythink.net/archives/category/%e5%bc%80%e5%8f%91/bash/">Shell</a></li>
+</ul>
+</li>
+</ul></div>				</nav><!-- #site-nav -->
+			</div><!-- #site-nav-wrap -->
+			<div class="clear"></div>
+		</div><!-- #top-menu -->
+	</div><!-- #menu-box -->
+</header><!-- #masthead -->
+
+<div id="search-main">
+	<div class="searchbar">
+	<form method="get" id="searchform" action="http://www.zsythink.net/">
+		<span>
+			<input type="text" value="" name="s" id="s" placeholder="请输入搜索内容，默认搜索更适合搜索文章标题" required />
+			<button type="submit" id="searchsubmit">搜索</button>
+		</span>
+
+			</form>
+</div>
+
+<div id="so360"  class="searchbar">
+    <form action="http://www.so.com/s" target="_blank" id="so360form">
+	<span>
+   	<input type="text" autocomplete="off" name="q" id="so360_keyword" placeholder="输入360站内搜索关键词，不同的搜索引擎收录的文章可能不同"  required />
+	<button type="submit" id="so360_submit" id="searchsubmit">360</button>
+	</span>
+        <input type="hidden" name="ie" value="utf8">
+        <input type="hidden" name="src" value="zz_zsythink.net">
+        <input type="hidden" name="site" value="zsythink.net">
+        <input type="hidden" name="rg" value="1">
+    </form>
+</div>
+
+		<div class="clear"></div>
+</div>		<nav class="breadcrumb">
+		<a class="crumbs" href="http://www.zsythink.net/"><i class="fa fa-home"></i>首页</a><i class="fa fa-angle-right"></i><a href="http://www.zsythink.net/archives/category/%e5%bc%80%e5%8f%91/">编程</a><i class="fa fa-angle-right"></i><a href="http://www.zsythink.net/archives/category/%e5%bc%80%e5%8f%91/bash/" rel="category tag">Shell</a><i class="fa fa-angle-right"></i><a href="http://www.zsythink.net/archives/category/%e5%bc%80%e5%8f%91/" rel="category tag">编程</a><i class="fa fa-angle-right"></i>正文	</nav>
+		
+		<div id="content" class="site-content">
+
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+			
+				<article id="post-2311" class="post-2311 post type-post status-publish format-standard hentry category-bash category-6 tag-shell zww">
+		<header class="entry-header">
+									<h1 class="entry-title">shell中常用的变量处理、字符串操作（之三）</h1>						</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		
+			<ul class="single-meta"><li class="print"><a href="javascript:printme()" target="_self" title="打印"><i class="fa fa-print"></i></a></li><li class="comment"><a href="http://www.zsythink.net/archives/2311#comments" rel="external nofollow"><i class="fa fa-comment-o"></i> 5</a></li><li class="r-hide"><a href="javascript:pr()" title="侧边栏"><i class="fa fa-caret-left"></i> <i class="fa fa-caret-right"></i></a></li></ul><ul id="fontsize"><li>A+</li></ul><div class="single-cat-tag"><div class="single-cat">所属分类：<a href="http://www.zsythink.net/archives/category/%e5%bc%80%e5%8f%91/bash/" rel="category tag">Shell</a>&nbsp;&nbsp;<a href="http://www.zsythink.net/archives/category/%e5%bc%80%e5%8f%91/" rel="category tag">编程</a></div></div>
+			<div class="single-content">
+				
+				
+				<p><img data-original="http://www.zsythink.net/ueditor/php/upload/image/20161206/1481034980961904.jpg" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" title="1481034980961904.jpg" alt="bash.jpg"/></p>
+
+<p>之前的文章中，我们提到了shell中常用的字符串处理操作，我们来回顾一下</p>
+<p>一、获取变量的长度（字符串长度）。</p>
+<p>二、对变量值进行截取（截取字符串）。</p>
+<p>三、替换变量值中的某段字符。</p>
+<p>四、删除变量值中的某段字符。</p>
+<p>五、对变量值进行大小写转换。</p>
+<p>六、当变量值为空时，对变量进行一些操作。</p>
+<p>&nbsp;</p>
+<p>前两篇文章中，我们已经总结了上述操作中的前四种操作，今天，我们来介绍一下上述操作的最后两种操作，并将之前的所有总结进行一个汇总，以便以后进行回顾。</p>
+<p>&nbsp;<br />
+&nbsp;</p>
+<h2>字符串大小写转换</h2>
+<p>首先，我们准备一个变量，变量值为字母a到z，只不过a到k为小写，L到Z为大写，如下图所示</p>
+<p><img data-original="http://www.zsythink.net/wp-content/uploads/2017/09/091017_0925_1.png" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" alt=""/></p>
+
+<p>&nbsp;</p>
+<p>如果我们想要将变量testvar1中的所有小写英文字母都转换成大写，该怎么办呢？我们可以使用如下方法。</p>
+<p><img data-original="http://www.zsythink.net/wp-content/uploads/2017/09/091017_0925_2.png" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" alt=""/></p>
+
+<p>如上图所示，只要在输出变量值时加上&quot;^^&quot;即可，&quot;^&quot;为数字键6对应的符号。</p>
+<p>&nbsp;</p>
+<p>如果想要将变量testvar1中的所有大写英文字母都转换成小写，可以使用如下方法。</p>
+<p><img data-original="http://www.zsythink.net/wp-content/uploads/2017/09/091017_0925_3.png" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" alt=""/></p>
+
+<p>如上图所示，只要在输出变量值时加上&quot;,,&quot;即可将字母中的大写字符转换成小写，很简单吧~</p>
+<p>&nbsp;</p>
+<h2>当变量值为空或者非空时对变量进行操作</h2>
+<p>在写shell脚本时，我们可能会遇到如下场景。</p>
+<p>我们需要判断某个变量是否为空，如果变量值不为空，则使用变量当前的值，如果为空，则赋予变量一个默认值，以便之后进行处理。</p>
+<p>那么，在脚本中可能会出现类似如下代码</p>
+<p>if [ -z &quot;$testvar&quot; ];then</p>
+<p>testvar=&quot;test&quot;</p>
+<p>fi</p>
+<p>如上述代码所示，我们使用 if 结构，判断了变量testvar是否为空，如果为空，则将变量赋值为test，当然，如果变量值不为空，那么则不会被赋值，即保持变量原值不变。</p>
+<p>&nbsp;</p>
+<p>其实，我们可以使用更简单的方法，我们只需要一行代码，就可以代替上例中的三行代码，示例如下</p>
+<p>${testvar:=&quot;test&quot;}</p>
+<p>没错，就是这么简单，上述代码表示，如果变量testvar的值为空，则将testvar赋值为test，如果不为空，则testvar保持原值不变。我们在命令行中试试上述代码的效果，首先，将变量testvar的值设置为空值，然后使用上述语法，如下。</p>
+<p><img data-original="http://www.zsythink.net/wp-content/uploads/2017/09/091017_0925_4.png" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" alt=""/></p>
+
+<p>可以看到，当变量为空时，上述语法不仅会将变量的值设置为指定值，同时还会返回对应的值，我们可以直接使用echo命令进行输出，经过上述语法处理后，再次输出变量，变量已经被赋值。</p>
+<p>当变量值不为空时，经过上述语法处理后，只会返回变量的原值，并不会改变变量的值，示例如下</p>
+<p><img data-original="http://www.zsythink.net/wp-content/uploads/2017/09/091017_0925_5.png" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" alt=""/></p>
+
+<p>&nbsp;</p>
+<p>可以发现，当变量为空时，使用上述语法会返回我们指定的值，同时还会将变量设定为我们指定的值，其实，还有另外一种方法，能够在变量为空时返回我们指定的值，但是不对变量进行赋值，示例如下。</p>
+<p>${testvar:-&quot;test&quot;}</p>
+<p>细心如你一定发现了，与之前的语法相比，只是语法中的&quot;=&quot;替换成了&quot;-&quot;</p>
+<p>上述语法表示，如果testvar变量值为空，则返回指定的文本&quot;test&quot;，如果testvar变量值不为空，则返回testvar变量本身的值，但是，当testvar变量值为空时，使用上述语法，只会返回指定的值，并不会对变量进行赋值操作，我们在命令行中看一下效果，示例如下。</p>
+<p><img data-original="http://www.zsythink.net/wp-content/uploads/2017/09/091017_0925_6.png" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" alt=""/></p>
+
+<p>可以看到，当变量为空时，上述语法并不会对变量赋值，当变量值不为空时，示例如下。</p>
+<p><img data-original="http://www.zsythink.net/wp-content/uploads/2017/09/091017_0925_7.png" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" alt=""/></p>
+
+<p>&nbsp;</p>
+<p>之前的两个示例，都是在变量为空时，返回我们指定的值，那么能不能在变量不为空时，返回我们指定的值呢？必须能的，使用如下语法即可。</p>
+<p>${testvar:+&quot;test&quot;}</p>
+<p>上述语法表示，当testvar变量值不为空时，返回指定的字符串&quot;test&quot;，如果变量为空，则返回变量本身的值（即空值），示例如下</p>
+<p><img data-original="http://www.zsythink.net/wp-content/uploads/2017/09/091017_0925_8.png" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" alt=""/></p>
+
+<p>如上图所示，当变量值不为空时，使用上述语法会返回我们指定的值，但是并不会改变变量原来的值，如果变量值为空，使用上述语法，仍然返回空值，同时也不会对变量进行赋值。</p>
+<p>&nbsp;</p>
+<p>我们还可以在变量为空时，输出bash风格的error_info，示例如下</p>
+<p>${testvar:?&quot;error_info&quot;}</p>
+<p>上述语法表示testvar变量为空时，输出bash错误，错误信息为我们指定的字符串error_info</p>
+<p>示例如下</p>
+<p><img data-original="http://www.zsythink.net/wp-content/uploads/2017/09/091017_0925_9.png" src="http://www.zsythink.net/wp-content/themes/begin/img/blank.gif" alt="shell中常用的变量处理、字符串操作（之三）" alt=""/></p>
+
+<p></p>
+<p>&nbsp;</p>
+<h2>总结</h2>
+<p>为了方便以后回顾，我们将之前所有与字符串处理、变量处理的相关操作进行汇总，并进行一个总结。</p>
+<p>&nbsp;</p>
+<h3 style="white-space: normal;">获取字符串长度</h3>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f0d798675261" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+# testvar="12345"
+# echo ${#testvar}
+5</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f0d798675261-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f0d798675261-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f0d798675261-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f0d798675261-1"><span class="crayon-c"># testvar="12345"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f0d798675261-2"><span class="crayon-c"># echo ${#testvar}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f0d798675261-3"><span class="crayon-cn">5</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;</p>
+<h3>对变量值进行大小写转换</h3>
+<p>将变量值中的小写字母装换为大写</p>
+<p>语法：echo ${var^^}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f17218545493" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#示例
+# testvar="case conversion"
+# echo ${testvar}
+case conversion
+# echo ${testvar^^}
+CASE CONVERSION</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f17218545493-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f17218545493-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f17218545493-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f17218545493-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f17218545493-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f17218545493-6">6</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f17218545493-1"><span class="crayon-c">#示例</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f17218545493-2"><span class="crayon-c"># testvar="case conversion"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f17218545493-3"><span class="crayon-c"># echo ${testvar}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f17218545493-4"><span class="crayon-st">case</span> <span class="crayon-e">conversion</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f17218545493-5"><span class="crayon-c"># echo ${testvar^^}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f17218545493-6"><span class="crayon-st">CASE</span> <span class="crayon-v">CONVERSION</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p>
+<p></p>
+<p>将变量值中的小写字母装换为大写</p>
+<p>语法：echo ${var^^}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f1a087120862" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#示例
+# testvar="CASE CONVERSION"
+# echo ${testvar}
+CASE CONVERSION
+# echo ${testvar,,}
+case conversion</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f1a087120862-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f1a087120862-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f1a087120862-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f1a087120862-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f1a087120862-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f1a087120862-6">6</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f1a087120862-1"><span class="crayon-c">#示例</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f1a087120862-2"><span class="crayon-c"># testvar="CASE CONVERSION"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f1a087120862-3"><span class="crayon-c"># echo ${testvar}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f1a087120862-4"><span class="crayon-st">CASE</span> <span class="crayon-e">CONVERSION</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f1a087120862-5"><span class="crayon-c"># echo ${testvar,,}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f1a087120862-6"><span class="crayon-st">case</span> <span class="crayon-v">conversion</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;&nbsp;</p>
+<h3>当变量值为空或者非空时操作变量</h3>
+<p>${var:=value}</p>
+<p>上述语法表示如果var为空，则返回value，并将value赋值给var，如果var不为空，则返回var本身的值，var不为空时，var值不会被改变，var为空时，var的值会被设置成指定值。</p>
+<p>${var:-value}</p>
+<p>上述语法表示如果var为空，则返回value，如果var不为空，则返回var的值，无论var是否为空，var本身的值不会改变。</p>
+<p>${var:+value}</p>
+<p>上述语法表示如果var不为空，则返回value，如果var为空，则返回空值，无论var是否为空，var本身的值不会改变。</p>
+<p>${var:?error_info}</p>
+<p>上述语法表示如果var为空，那么在当前终端打印error_info，如果var的值不为空，则返回var的值，无论var是否为空，var本身的值都不会改变。</p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;&nbsp;</p>
+<h3 style="white-space: normal;">从指定位置截取字符串，截取到字符串的末尾</h3>
+<p style="white-space: normal;">#下例表示从正数第4个字符以后开始截取，直到字符串的末尾。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f1d815192767" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+# website="www.zsythink.net"
+# echo ${website:4}
+zsythink.net</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f1d815192767-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f1d815192767-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f1d815192767-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f1d815192767-1"><span class="crayon-c"># website="www.zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f1d815192767-2"><span class="crayon-c"># echo ${website:4}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f1d815192767-3"><span class="crayon-v">zsythink</span><span class="crayon-e">.net</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0002 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">#下例表示从倒数第4个字符开始截取，直到字符串的末尾</p>
+<p style="white-space: normal;"><span style="color: rgb(255, 0, 0);">#注意：下例中的&quot;负号&quot;与&quot;冒号&quot;之间必须存在任意字符（通常使用0或空格占位），否则无法起到截取字符串的作用。</span></p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f20673741374" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+# website="www.zsythink.net"
+# echo ${website:0-4}
+.net
+# echo ${website: -4}
+.net
+# echo ${website:a-4}
+.net</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f20673741374-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f20673741374-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f20673741374-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f20673741374-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f20673741374-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f20673741374-6">6</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f20673741374-7">7</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f20673741374-1"><span class="crayon-c"># website="www.zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f20673741374-2"><span class="crayon-c"># echo ${website:0-4}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f20673741374-3"><span class="crayon-e">.net</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f20673741374-4"><span class="crayon-c"># echo ${website: -4}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f20673741374-5"><span class="crayon-e">.net</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f20673741374-6"><span class="crayon-c"># echo ${website:a-4}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f20673741374-7"><span class="crayon-e">.net</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;&nbsp;</p>
+<h3 style="white-space: normal;">从指定位置截取字符串，并且截取指定的长度</h3>
+<p style="white-space: normal;">#下例表示从正数第4个字符以后开始截取，截取8个字符。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f22010062043" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+# website="www.zsythink.net"
+# echo ${website:4:8}
+zsythink</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f22010062043-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f22010062043-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f22010062043-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f22010062043-1"><span class="crayon-c"># website="www.zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f22010062043-2"><span class="crayon-c"># echo ${website:4:8}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f22010062043-3"><span class="crayon-v">zsythink</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0002 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">#下例表示从倒数第9个字符开始截取，截取5个字符。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f25515203541" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+# website="www.zsythink.net"
+# echo ${website:0-9:5}
+think</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f25515203541-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f25515203541-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f25515203541-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f25515203541-1"><span class="crayon-c"># website="www.zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f25515203541-2"><span class="crayon-c"># echo ${website:0-9:5}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f25515203541-3"><span class="crayon-v">think</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><span style="color: rgb(255, 0, 0);">##centos7中，截取长度可以为负数，centos6中不行，centos7中的示例如下</span></p>
+<p style="white-space: normal;">#下例表示从正数第4个字符以后开始截取，截取到字符串的末尾，再将截取后的字符串的最后3个字符删除。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f27647120037" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+# website="www.zsythink.net"
+# echo ${website:4:-3}
+zsythink.</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f27647120037-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f27647120037-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f27647120037-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f27647120037-1"><span class="crayon-c"># website="www.zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f27647120037-2"><span class="crayon-c"># echo ${website:4:-3}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f27647120037-3"><span class="crayon-v">zsythink</span><span class="crayon-sy">.</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><span style="color: rgb(255, 0, 0);">##centos7中，截取长度可以为负数，centos6中不行，centos7中的示例如下</span></p>
+<p style="white-space: normal;">#下例表示从倒数第4个字符开始截取，截取到字符串的末尾，再将截取后的字符串的最后1个字符删除。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f29675633250" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+# website="www.zsythink.net"
+# echo ${website:0-4:-1}
+.ne</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f29675633250-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f29675633250-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f29675633250-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f29675633250-1"><span class="crayon-c"># website="www.zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f29675633250-2"><span class="crayon-c"># echo ${website:0-4:-1}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f29675633250-3"><span class="crayon-e">.ne</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;&nbsp;</p>
+<h3 style="white-space: normal;">掐头去尾截取之掐头截取</h3>
+<p style="white-space: normal;"><strong>掐头截取：删除字符串中从左向右第一个遇到的char，以及其左侧的字符</strong></p>
+<p style="white-space: normal;">##语法：${var#*char}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f2c904374998" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示删除字符串中从左向右第一个遇到的 "." ，以及其左侧的字符。
+# website="www.zsythink.net"
+# echo ${website#*.}
+zsythink.net
+ 
+#下例表示删除字符串中从左向右第一个遇到的 "//" ，以及其左侧的字符。
+# website="https://ww.zsythink.net"
+# echo ${website#*//}
+ww.zsythink.net</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f2c904374998-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2c904374998-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2c904374998-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2c904374998-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2c904374998-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2c904374998-6">6</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2c904374998-7">7</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2c904374998-8">8</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2c904374998-9">9</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f2c904374998-1"><span class="crayon-c">#下例表示删除字符串中从左向右第一个遇到的 "." ，以及其左侧的字符。</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2c904374998-2"><span class="crayon-c"># website="www.zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2c904374998-3"><span class="crayon-c"># echo ${website#*.}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2c904374998-4"><span class="crayon-v">zsythink</span><span class="crayon-e">.net</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2c904374998-5"> </div><div class="crayon-line" id="crayon-5dd2bc49c7f2c904374998-6"><span class="crayon-c">#下例表示删除字符串中从左向右第一个遇到的 "//" ，以及其左侧的字符。</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2c904374998-7"><span class="crayon-c"># website="https://ww.zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2c904374998-8"><span class="crayon-c"># echo ${website#*//}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2c904374998-9"><span class="crayon-v">ww</span><span class="crayon-e">.zsythink</span><span class="crayon-e">.net</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0005 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>掐头截取：删除字符串中从左向右最后一个遇到的char，以及其左侧的字符</strong></p>
+<p style="white-space: normal;">##语法：${var##*char}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f2e778004593" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示删除字符串中从左向右最后一个遇到的 "/" ，以及其左侧的字符。
+# website="https://ww.zsythink.net/index.html"
+# echo ${website##*/}
+index.html
+ 
+#下例表示删除字符串中从左向右最后一个遇到的 "." ，以及其左侧的字符。
+# website="www.zsythink.net"
+# echo ${website##*.}
+net</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f2e778004593-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2e778004593-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2e778004593-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2e778004593-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2e778004593-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2e778004593-6">6</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2e778004593-7">7</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2e778004593-8">8</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f2e778004593-9">9</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f2e778004593-1"><span class="crayon-c">#下例表示删除字符串中从左向右最后一个遇到的 "/" ，以及其左侧的字符。</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2e778004593-2"><span class="crayon-c"># website="https://ww.zsythink.net/index.html"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2e778004593-3"><span class="crayon-c"># echo ${website##*/}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2e778004593-4"><span class="crayon-v">index</span><span class="crayon-e">.html</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2e778004593-5"> </div><div class="crayon-line" id="crayon-5dd2bc49c7f2e778004593-6"><span class="crayon-c">#下例表示删除字符串中从左向右最后一个遇到的 "." ，以及其左侧的字符。</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2e778004593-7"><span class="crayon-c"># website="www.zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2e778004593-8"><span class="crayon-c"># echo ${website##*.}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f2e778004593-9"><span class="crayon-v">net</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0007 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;&nbsp;</p>
+<h3 style="white-space: normal;">掐头去尾截取之去尾截取</h3>
+<p style="white-space: normal;"><strong>去尾截取：删除字符串中从右向左第一个遇到的char，以及其右侧的字符</strong></p>
+<p style="white-space: normal;">##语法：${var%char*}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f31225021733" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示删除字符串中从右向左第一个遇到的 "/" ，以及其右侧的字符。
+# testpath="/usr/local/nginx/conf.d"
+# echo ${testpath%/*}
+/usr/local/nginx
+ 
+#下例表示删除字符串中从右向左第一个遇到的 "@" ，以及其右侧的字符。
+# testmail="zsy@zsythink.net"
+# echo ${testmail%@*}
+zsy</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f31225021733-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f31225021733-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f31225021733-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f31225021733-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f31225021733-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f31225021733-6">6</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f31225021733-7">7</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f31225021733-8">8</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f31225021733-9">9</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f31225021733-1"><span class="crayon-c">#下例表示删除字符串中从右向左第一个遇到的 "/" ，以及其右侧的字符。</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f31225021733-2"><span class="crayon-c"># testpath="/usr/local/nginx/conf.d"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f31225021733-3"><span class="crayon-c"># echo ${testpath%/*}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f31225021733-4"><span class="crayon-o">/</span><span class="crayon-v">usr</span><span class="crayon-o">/</span><span class="crayon-v">local</span><span class="crayon-o">/</span><span class="crayon-i">nginx</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f31225021733-5"> </div><div class="crayon-line" id="crayon-5dd2bc49c7f31225021733-6"><span class="crayon-c">#下例表示删除字符串中从右向左第一个遇到的 "@" ，以及其右侧的字符。</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f31225021733-7"><span class="crayon-c"># testmail="zsy@zsythink.net"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f31225021733-8"><span class="crayon-c"># echo ${testmail%@*}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f31225021733-9"><span class="crayon-v">zsy</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0007 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>去尾截取：删除字符串中从右向左最后一个遇到的char，以及其右侧的字符</strong></p>
+<p style="white-space: normal;">##语法：${var%%char*}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f33215053056" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示删除字符串中从右向左最后一个遇到的 "/" ，以及其右侧的字符。
+# website="https://ww.zsythink.net/index.html"
+# echo ${website%%/*}
+https:
+ 
+#下例表示删除字符串中从右向左最后一个遇到的 ":" ，以及其右侧的字符。
+# testpasswd="root:x:0:0:root:/root:/bin/bash"
+# echo ${testpasswd%%:*}
+root</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f33215053056-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f33215053056-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f33215053056-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f33215053056-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f33215053056-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f33215053056-6">6</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f33215053056-7">7</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f33215053056-8">8</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f33215053056-9">9</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f33215053056-1"><span class="crayon-c">#下例表示删除字符串中从右向左最后一个遇到的 "/" ，以及其右侧的字符。</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f33215053056-2"><span class="crayon-c"># website="https://ww.zsythink.net/index.html"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f33215053056-3"><span class="crayon-c"># echo ${website%%/*}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f33215053056-4"><span class="crayon-v">https</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f33215053056-5"> </div><div class="crayon-line" id="crayon-5dd2bc49c7f33215053056-6"><span class="crayon-c">#下例表示删除字符串中从右向左最后一个遇到的 ":" ，以及其右侧的字符。</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f33215053056-7"><span class="crayon-c"># testpasswd="root:x:0:0:root:/root:/bin/bash"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f33215053056-8"><span class="crayon-c"># echo ${testpasswd%%:*}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f33215053056-9"><span class="crayon-v">root</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0005 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;&nbsp;</p>
+<h3 style="white-space: normal;">删除字符串的操作</h3>
+<p style="white-space: normal;"><strong>删除变量值中第一个遇到的指定字符串</strong></p>
+<p style="white-space: normal;">语法：echo ${var/str}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f36735196083" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示删除变量值中第一个遇到的"@"
+# teststr="zsy@think@linux"
+# echo ${teststr/@}
+zsythink@linux</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f36735196083-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f36735196083-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f36735196083-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f36735196083-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f36735196083-1"><span class="crayon-c">#下例表示删除变量值中第一个遇到的"@"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f36735196083-2"><span class="crayon-c"># teststr="zsy@think@linux"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f36735196083-3"><span class="crayon-c"># echo ${teststr/@}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f36735196083-4"><span class="crayon-v">zsythink</span><span class="crayon-sy">@</span><span class="crayon-v">linux</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>删除变量值中所有的指定字符串</strong></p>
+<p style="white-space: normal;">语法：echo ${var//str}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f38718359555" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示删除字符串中所有的"@"
+# teststr="zsy@think@linux"
+# echo ${teststr//@}
+zsythinklinux</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f38718359555-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f38718359555-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f38718359555-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f38718359555-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f38718359555-1"><span class="crayon-c">#下例表示删除字符串中所有的"@"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f38718359555-2"><span class="crayon-c"># teststr="zsy@think@linux"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f38718359555-3"><span class="crayon-c"># echo ${teststr//@}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f38718359555-4"><span class="crayon-v">zsythinklinux</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>特殊情况</strong></p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f3b782792690" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+刚才总结了两种语法
+语法一：删除变量值中所有的指定字符串的语法为echo ${var//str}
+语法二：删除变量值中第一个遇到的指定字符串的语法为echo ${var/str}
+ 
+如果，我们要删除字符串"/usr/local/chroot/usr/local"中第一个遇到的"/usr"，该怎么办呢？
+正常情况下，我们会套用上述语法二，将语法二中的"str"更改为"/usr"，套用语法二后的命令如下
+# teststr="/usr/local/chroot/usr/local/nginx"
+# echo ${teststr//usr}
+但是，套用语法二后的命令正好与上述语法一的语法结构相同，所以，本意是删除字符串中第一个遇到的"/usr"，但是最终结果却变为删除字符串中所有的"usr"，执行结果如下
+# teststr="/usr/local/chroot/usr/local/nginx"
+# echo ${teststr//usr}
+//local/chroot//local/nginx
+聪明如你一定想到了，这种情况需要对"/"进行转义，示例如下
+# teststr="/usr/local/chroot/usr/local/nginx"
+# echo ${teststr/\/usr}
+/local/chroot/usr/local/nginx</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-6">6</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-7">7</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-8">8</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-9">9</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-10">10</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-11">11</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-12">12</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-13">13</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-14">14</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-15">15</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3b782792690-16">16</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-1">刚才总结了两种语法</div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-2">语法一：删除变量值中所有的指定字符串的语法为<span class="crayon-r">echo</span> <span class="crayon-sy">$</span><span class="crayon-sy">{</span><span class="crayon-t">var</span><span class="crayon-o">/</span><span class="crayon-o">/</span><span class="crayon-v">str</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-3">语法二：删除变量值中第一个遇到的指定字符串的语法为<span class="crayon-r">echo</span> <span class="crayon-sy">$</span><span class="crayon-sy">{</span><span class="crayon-t">var</span><span class="crayon-o">/</span><span class="crayon-v">str</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-4"> </div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-5">如果，我们要删除字符串<span class="crayon-s">"/usr/local/chroot/usr/local"</span>中第一个遇到的<span class="crayon-s">"/usr"</span>，该怎么办呢？</div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-6">正常情况下，我们会套用上述语法二，将语法二中的<span class="crayon-s">"str"</span>更改为<span class="crayon-s">"/usr"</span>，套用语法二后的命令如下</div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-7"><span class="crayon-c"># teststr="/usr/local/chroot/usr/local/nginx"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-8"><span class="crayon-c"># echo ${teststr//usr}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-9">但是，套用语法二后的命令正好与上述语法一的语法结构相同，所以，本意是删除字符串中第一个遇到的<span class="crayon-s">"/usr"</span>，但是最终结果却变为删除字符串中所有的<span class="crayon-s">"usr"</span>，执行结果如下</div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-10"><span class="crayon-c"># teststr="/usr/local/chroot/usr/local/nginx"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-11"><span class="crayon-c"># echo ${teststr//usr}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-12"><span class="crayon-o">/</span><span class="crayon-o">/</span><span class="crayon-v">local</span><span class="crayon-o">/</span><span class="crayon-v">chroot</span><span class="crayon-o">/</span><span class="crayon-o">/</span><span class="crayon-v">local</span><span class="crayon-o">/</span><span class="crayon-i">nginx</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-13">聪明如你一定想到了，这种情况需要对<span class="crayon-s">"/"</span>进行转义，示例如下</div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-14"><span class="crayon-c"># teststr="/usr/local/chroot/usr/local/nginx"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-15"><span class="crayon-c"># echo ${teststr/\/usr}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3b782792690-16"><span class="crayon-o">/</span><span class="crayon-v">local</span><span class="crayon-o">/</span><span class="crayon-v">chroot</span><span class="crayon-o">/</span><span class="crayon-v">usr</span><span class="crayon-o">/</span><span class="crayon-v">local</span><span class="crayon-o">/</span><span class="crayon-v">nginx</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0034 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>删除变量值中位于行首的指定字符串</strong></p>
+<p style="white-space: normal;">语法：echo ${var/#str}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f3d864873591" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示删除字符串中行首的"H"
+# teststr="H.H.H.H.H.H"
+# echo ${teststr/#H}
+.H.H.H.H.H
+ 
+#下例表示删除字符串中行首的"#"
+# teststr="#zsy#think#linux"
+# echo ${teststr/##}
+zsy#think#linux</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f3d864873591-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3d864873591-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3d864873591-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3d864873591-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3d864873591-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3d864873591-6">6</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3d864873591-7">7</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3d864873591-8">8</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f3d864873591-9">9</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f3d864873591-1"><span class="crayon-c">#下例表示删除字符串中行首的"H"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3d864873591-2"><span class="crayon-c"># teststr="H.H.H.H.H.H"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3d864873591-3"><span class="crayon-c"># echo ${teststr/#H}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3d864873591-4"><span class="crayon-e">.H</span><span class="crayon-e">.H</span><span class="crayon-e">.H</span><span class="crayon-e">.H</span><span class="crayon-e">.H</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3d864873591-5"> </div><div class="crayon-line" id="crayon-5dd2bc49c7f3d864873591-6"><span class="crayon-c">#下例表示删除字符串中行首的"#"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3d864873591-7"><span class="crayon-c"># teststr="#zsy#think#linux"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3d864873591-8"><span class="crayon-c"># echo ${teststr/##}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f3d864873591-9"><span class="crayon-v">zsy</span><span class="crayon-c">#think#linux</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0005 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>特殊情况</strong></p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f40928334436" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+参考之前的特殊情况，即可发现，由于删除字符串中行首的字符时需要使用语法"/#"，所以如果想要删除字符串中第一个遇到的"#"时，则不能使用"/#"，需要对"#"进行转义，示例如下，删除字符串中第一个遇到的"#"
+# teststr="zsy#think#linux"
+# echo ${teststr/\#}
+zsythink#linux</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f40928334436-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f40928334436-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f40928334436-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f40928334436-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f40928334436-1">参考之前的特殊情况，即可发现，由于删除字符串中行首的字符时需要使用语法<span class="crayon-s">"/#"</span>，所以如果想要删除字符串中第一个遇到的<span class="crayon-s">"#"</span>时，则不能使用<span class="crayon-s">"/#"</span>，需要对<span class="crayon-s">"#"</span>进行转义，示例如下，删除字符串中第一个遇到的<span class="crayon-s">"#"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f40928334436-2"><span class="crayon-c"># teststr="zsy#think#linux"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f40928334436-3"><span class="crayon-c"># echo ${teststr/\#}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f40928334436-4"><span class="crayon-v">zsythink</span><span class="crayon-c">#linux</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0013 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>删除变量值中位于行尾的指定字符串</strong></p>
+<p style="white-space: normal;">语法：echo ${var/%str}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f42265893849" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示删除字符串中行尾的"H"
+# teststr="H.H.H.H.H.H"
+# echo ${teststr/%H}
+H.H.H.H.H.
+ 
+#下例表示删除字符串中行尾的"%"
+# teststr="zsy%think%linux%"
+# echo ${teststr/%%}
+zsy%think%linux</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f42265893849-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f42265893849-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f42265893849-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f42265893849-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f42265893849-5">5</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f42265893849-6">6</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f42265893849-7">7</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f42265893849-8">8</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f42265893849-9">9</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f42265893849-1"><span class="crayon-c">#下例表示删除字符串中行尾的"H"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f42265893849-2"><span class="crayon-c"># teststr="H.H.H.H.H.H"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f42265893849-3"><span class="crayon-c"># echo ${teststr/%H}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f42265893849-4"><span class="crayon-v">H</span><span class="crayon-e">.H</span><span class="crayon-e">.H</span><span class="crayon-e">.H</span><span class="crayon-e">.H</span><span class="crayon-sy">.</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f42265893849-5"> </div><div class="crayon-line" id="crayon-5dd2bc49c7f42265893849-6"><span class="crayon-c">#下例表示删除字符串中行尾的"%"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f42265893849-7"><span class="crayon-c"># teststr="zsy%think%linux%"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f42265893849-8"><span class="crayon-c"># echo ${teststr/%%}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f42265893849-9"><span class="crayon-v">zsy</span><span class="crayon-o">%</span><span class="crayon-v">think</span><span class="crayon-o">%</span><span class="crayon-v">linux</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0007 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>特殊情况</strong></p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f45559774803" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+参考之前的特殊情况，即可发现，由于删除字符串中行尾的字符时需要使用语法"/%"，所以如果想要删除字符串中第一个遇到的"%"时，则不能使用"/%"，需要对"%"进行转义
+#示例如下，删除字符串中第一个遇到的"%"
+# teststr="zsy%think%linux%"
+# echo ${teststr/\%}
+zsythink%linux%</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f45559774803-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f45559774803-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f45559774803-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f45559774803-4">4</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f45559774803-5">5</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f45559774803-1">参考之前的特殊情况，即可发现，由于删除字符串中行尾的字符时需要使用语法<span class="crayon-s">"/%"</span>，所以如果想要删除字符串中第一个遇到的<span class="crayon-s">"%"</span>时，则不能使用<span class="crayon-s">"/%"</span>，需要对<span class="crayon-s">"%"</span>进行转义</div><div class="crayon-line" id="crayon-5dd2bc49c7f45559774803-2"><span class="crayon-c">#示例如下，删除字符串中第一个遇到的"%"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f45559774803-3"><span class="crayon-c"># teststr="zsy%think%linux%"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f45559774803-4"><span class="crayon-c"># echo ${teststr/\%}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f45559774803-5"><span class="crayon-v">zsythink</span><span class="crayon-o">%</span><span class="crayon-v">linux</span><span class="crayon-o">%</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0010 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;&nbsp;</p>
+<h3 style="white-space: normal;">替换字符串的操作</h3>
+<p style="white-space: normal;"><strong>将变量值中第一个遇到的str1替换成str2</strong></p>
+<p style="white-space: normal;">语法：echo ${var/str1/str2}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f47175755151" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示将字符串中第一个遇到的"w"替换成"abc"
+# teststr="www"
+# echo ${teststr/w/abc}
+abcww</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f47175755151-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f47175755151-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f47175755151-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f47175755151-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f47175755151-1"><span class="crayon-c">#下例表示将字符串中第一个遇到的"w"替换成"abc"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f47175755151-2"><span class="crayon-c"># teststr="www"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f47175755151-3"><span class="crayon-c"># echo ${teststr/w/abc}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f47175755151-4"><span class="crayon-v">abcww</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>将变量值中所有的str1替换成str2</strong></p>
+<p style="white-space: normal;">语法：echo ${var//str1/str2}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f49358528437" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示将字符串中所有"w"替换成"abc"
+# teststr="www"
+# echo ${teststr//w/abc}
+abcabcabc</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f49358528437-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f49358528437-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f49358528437-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f49358528437-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f49358528437-1"><span class="crayon-c">#下例表示将字符串中所有"w"替换成"abc"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f49358528437-2"><span class="crayon-c"># teststr="www"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f49358528437-3"><span class="crayon-c"># echo ${teststr//w/abc}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f49358528437-4"><span class="crayon-v">abcabcabc</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>特殊情况</strong></p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f4c723275925" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+某些情况下需要进行转义，参考"删除字符串操作"总结部分的特殊情况。</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f4c723275925-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f4c723275925-1">某些情况下需要进行转义，参考<span class="crayon-s">"删除字符串操作"</span>总结部分的特殊情况。</div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>将变量值中位于行首的str1替换成str2</strong></p>
+<p style="white-space: normal;">语法：echo ${var/#str1/str2}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f4e952435932" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示将字符串中位于行首的abc替换成123
+# teststr="abcdefabc666abc888abc"
+# echo ${teststr/#abc/123}
+123defabc666abc888abc</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f4e952435932-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f4e952435932-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f4e952435932-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f4e952435932-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f4e952435932-1"><span class="crayon-c">#下例表示将字符串中位于行首的abc替换成123</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f4e952435932-2"><span class="crayon-c"># teststr="abcdefabc666abc888abc"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f4e952435932-3"><span class="crayon-c"># echo ${teststr/#abc/123}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f4e952435932-4"><span class="crayon-cn">123defabc666abc888abc</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>特殊情况</strong></p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f50192678274" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+某些情况下需要对#号进行转义，参考"删除字符串操作"总结部分的特殊情况。</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f50192678274-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f50192678274-1">某些情况下需要对<span class="crayon-c">#号进行转义，参考"删除字符串操作"总结部分的特殊情况。</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0003 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>将变量值中位于行尾的str1替换成str2</strong></p>
+<p style="white-space: normal;">语法：echo ${var/%str1/str2}</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f53181532574" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+#下例表示将字符串中位于行尾的abc替换成666
+# teststr="abcdefabc666abc888abc"
+# echo ${teststr/%abc/666}
+abcdefabc666abc888666</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f53181532574-1">1</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f53181532574-2">2</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f53181532574-3">3</div><div class="crayon-num" data-line="crayon-5dd2bc49c7f53181532574-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f53181532574-1"><span class="crayon-c">#下例表示将字符串中位于行尾的abc替换成666</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f53181532574-2"><span class="crayon-c"># teststr="abcdefabc666abc888abc"</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f53181532574-3"><span class="crayon-c"># echo ${teststr/%abc/666}</span></div><div class="crayon-line" id="crayon-5dd2bc49c7f53181532574-4"><span class="crayon-v">abcdefabc666abc888666</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;"><strong>特殊情况</strong></p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-5dd2bc49c7f55192595678" class="crayon-syntax crayon-theme-familiar crayon-font-verdana crayon-os-pc print-yes notranslate" data-settings=" touchscreen no-popup minimize scroll-mouseover wrap" style=" margin-top: 12px; margin-bottom: 12px; font-size: 15px !important; line-height: 25px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 15px !important;height: 22.5px !important; line-height: 22.5px !important;"><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 21px !important; line-height: 21px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea  class="crayon-plain print-no" data-settings="click"  style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 25px !important;">
+某些情况下需要对%号进行转义，参考"删除字符串操作"总结部分的特殊情况。</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 15px !important; line-height: 25px !important;"><div class="crayon-num" data-line="crayon-5dd2bc49c7f55192595678-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 15px !important; line-height: 25px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5dd2bc49c7f55192595678-1">某些情况下需要对<span class="crayon-o">%</span>号进行转义，参考<span class="crayon-s">"删除字符串操作"</span>总结部分的特殊情况。</div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p>
+<p style="white-space: normal;"></p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">好了，关于变量操作、字符串操作就总结到这里，希望这篇文章能够对你有所帮助。</p>
+<p style="white-space: normal;">&nbsp;</p>
+<p style="white-space: normal;">&nbsp;</p>
+			</div>
+
+						
+									
+						
+									<div class="s-weixin-one">
+	<div class="weimg-one">
+		<img src="http://www.zsythink.net/wp-content/uploads/2017/04/2017-04-27-1720365637.png" alt="weinxin" />
+		<div class="weixin-h"><strong>我的微信公众号</strong></div>
+		<div class="weixin-h-w">关注"实用运维笔记"微信公众号，当博客中有新文章时，可第一时间得知哦~</div>
+		<div class="clear"></div>
+	</div>
+</div>
+				
+									<div class="clear"></div>
+<div id="social">
+	<div class="social-main">
+		<span class="like">
+			<a href="javascript:;" data-action="ding" data-id="2311" title="点赞" class="dingzan"><i class="fa fa-thumbs-up"></i>赞 <i class="count">
+				15</i>
+			</a>
+		</span>
+		<div class="shang-p">
+			<div class="shang-empty"><span></span></div>
+							<span class="tipso_style" id="tip-p" data-tipso='
+					<span id="shang">
+						<span class="shang-main">
+							<h4><i class="fa fa-heart" aria-hidden="true"></i> 谢谢老板打赏</h4>															<span class="shang-img">
+									<img src="http://www.zsythink.net/wp-content/uploads/2016/12/dszfb.jpg" alt="alipay"/>
+									<h4>支付宝扫一扫</h4>								</span>
+							
+															<span class="shang-img">
+									<img src="http://www.zsythink.net/wp-content/uploads/2016/12/dswx.jpg" alt="weixin"/>
+									<h4>微信钱包扫描赞助</h4>								</span>
+														<span class="clear"></span>
+						</span>
+					</span>'>
+					<span class="shang-s"><a title="赞助本站">赏</a></span>
+				</span>
+					</div>
+		<div class="share-sd">
+			<span class="share-s"><a href="javascript:void(0)" id="share-s" title="分享"><i class="fa fa-share-alt"></i>分享</a></span>
+			<div id="share">
+	<ul class="bdsharebuttonbox">
+		<li><a title="更多" class="bds_more fa fa-plus-square" data-cmd="more" onclick="return false;" href="#"></a></li>
+		<li><a title="分享到QQ空间" class="fa fa-qq" data-cmd="qzone" onclick="return false;" href="#"></a></li>
+		<li><a title="分享到新浪微博" class="fa fa-weibo" data-cmd="tsina" onclick="return false;" href="#"></a></li>
+		<li><a title="分享到腾讯微博" class="fa fa-pinterest-square" data-cmd="tqq" onclick="return false;" href="#"></a></li>
+		<li><a title="分享到人人网" class="fa fa-renren" data-cmd="renren" onclick="return false;" href="#"></a></li>
+		<li><a title="分享到微信" class="fa fa-weixin" data-cmd="weixin" onclick="return false;" href="#"></a></li>
+	</ul>
+</div>		</div>
+		<div class="clear"></div>
+	</div>
+</div>				
+				
+			<footer class="single-footer">
+							</footer><!-- .entry-footer -->
+
+				<div class="clear"></div>
+	</div><!-- .entry-content -->
+
+	</article><!-- #post -->
+
+<div class="single-tag"><ul class="wow fadeInUp" data-wow-delay="0.3s"><li><a href="http://www.zsythink.net/archives/tag/shell/" rel="tag">Shell（bash）</a></li></ul></div>
+									<div class="authorbio wow fadeInUp" data-wow-delay="0.3s">
+	<img alt='朱双印' src='http://www.zsythink.net/wp-content/uploads/2016/12/wpadmin_avatar-64x61.jpg' class='avatar avatar-64 photo' height='64' width='64' />
+	<ul class="spostinfo">
+		<li>
+								<li><strong>版权声明：</strong>本站原创文章，于2017年9月10日<i class="i-time">17:58:45</i>，由 <b><a href="http://www.zsythink.net/archives/author/朱双印/" title="由朱双印发布" rel="author">朱双印</a></b> 发表，共 4060 字。</li>
+		<li class="reprinted"><strong>如需转载，请联系作者：</strong><a href="http://www.zsythink.net/archives/2311" rel="bookmark" title="本文固定链接 http://www.zsythink.net/archives/2311">shell中常用的变量处理、字符串操作（之三） | 朱双印博客</a></li>
+			</ul>
+	<div class="clear"></div>
+</div>
+				
+				
+									<div id="related-img" class="wow fadeInUp" data-wow-delay="0.3s">
+		
+	<div class="r4">
+		<div class="related-site">
+			<figure class="related-site-img">
+				<a href="http://www.zsythink.net/archives/2296"><img src="http://www.zsythink.net/wp-content/themes/begin/timthumb.php?src=http://www.zsythink.net/ueditor/php/upload/image/20161206/1481034980961904.jpg&w=280&h=210&a=&zc=1" alt="shell中常用的变量处理、字符串操作（之二）" /></a>			 </figure>
+			<div class="related-title"><a href="http://www.zsythink.net/archives/2296">shell中常用的变量处理、字符串操作（之二）</a></div>
+		</div>
+	</div>
+
+		
+	<div class="r4">
+		<div class="related-site">
+			<figure class="related-site-img">
+				<a href="http://www.zsythink.net/archives/2276"><img src="http://www.zsythink.net/wp-content/themes/begin/timthumb.php?src=http://www.zsythink.net/ueditor/php/upload/image/20161206/1481034980961904.jpg&w=280&h=210&a=&zc=1" alt="shell中常用的变量处理、字符串操作（之一）" /></a>			 </figure>
+			<div class="related-title"><a href="http://www.zsythink.net/archives/2276">shell中常用的变量处理、字符串操作（之一）</a></div>
+		</div>
+	</div>
+
+		
+	<div class="r4">
+		<div class="related-site">
+			<figure class="related-site-img">
+				<a href="http://www.zsythink.net/archives/2252"><img src="http://www.zsythink.net/wp-content/themes/begin/timthumb.php?src=http://www.zsythink.net/ueditor/php/upload/image/20161206/1481034980961904.jpg&w=280&h=210&a=&zc=1" alt="bash中 [ ] 与 [[ ]] 的区别" /></a>			 </figure>
+			<div class="related-title"><a href="http://www.zsythink.net/archives/2252">bash中 [ ] 与 [[ ]] 的区别</a></div>
+		</div>
+	</div>
+
+		
+	<div class="r4">
+		<div class="related-site">
+			<figure class="related-site-img">
+				<a href="http://www.zsythink.net/archives/2224"><img src="http://www.zsythink.net/wp-content/themes/begin/timthumb.php?src=http://www.zsythink.net/ueditor/php/upload/image/20161206/1481034980961904.jpg&w=280&h=210&a=&zc=1" alt="shell中'-gt'与'>'的区别" /></a>			 </figure>
+			<div class="related-title"><a href="http://www.zsythink.net/archives/2224">shell中&#8217;-gt&#8217;与&#8217;>&#8217;的区别</a></div>
+		</div>
+	</div>
+
+			<div class="clear"></div>
+</div>				
+				
+				
+				<nav class="nav-single wow fadeInUp" data-wow-delay="0.3s">
+					<a href="http://www.zsythink.net/archives/2296" rel="prev"><span class="meta-nav"><span class="post-nav"><i class="fa fa-angle-left"></i> 上一篇</span><br/>shell中常用的变量处理、字符串操作（之二）</span></a><span class='meta-nav'><span class='post-nav'>没有了<br/></span>已是最新文章</span>					<div class="clear"></div>
+				</nav>
+
+				
+	<nav class="navigation post-navigation" role="navigation">
+		<h2 class="screen-reader-text">文章导航</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="http://www.zsythink.net/archives/2296" rel="prev"><span class="meta-nav-r" aria-hidden="true"><i class="fa fa-angle-left"></i></span></a></div><div class="nav-next"><a href="http://www.zsythink.net/archives/2345" rel="next"><span class="meta-nav-l" aria-hidden="true"><i class="fa fa-angle-right"></i></span></a></div></div>
+	</nav>
+									
+<!-- 引用 -->
+
+
+<div class="scroll-comments"></div>
+
+<div id="comments" class="comments-area">
+
+	
+		<div id="respond" class="comment-respond wow fadeInUp" data-wow-delay="0.3s">
+			<h3 id="reply-title" class="comment-reply-title">发表评论<small><a rel="nofollow" id="cancel-comment-reply-link" href="/archives/2311#respond" style="display:none;">取消回复</a></small></h3>
+
+			
+				<form action="http://www.zsythink.net/wp-comments-post.php" method="post" id="commentform">
+					
+			        <p class="emoji-box"><script type="text/javascript">
+/* <![CDATA[ */
+    function grin(tag) {
+    	var myField;
+    	tag = ' ' + tag + ' ';
+        if (document.getElementById('comment') && document.getElementById('comment').type == 'textarea') {
+    		myField = document.getElementById('comment');
+    	} else {
+    		return false;
+    	}
+    	if (document.selection) {
+    		myField.focus();
+    		sel = document.selection.createRange();
+    		sel.text = tag;
+    		myField.focus();
+    	}
+    	else if (myField.selectionStart || myField.selectionStart == '0') {
+    		var startPos = myField.selectionStart;
+    		var endPos = myField.selectionEnd;
+    		var cursorPos = endPos;
+    		myField.value = myField.value.substring(0, startPos)
+    					  + tag
+    					  + myField.value.substring(endPos, myField.value.length);
+    		cursorPos += tag.length;
+    		myField.focus();
+    		myField.selectionStart = cursorPos;
+    		myField.selectionEnd = cursorPos;
+    	}
+    	else {
+    		myField.value += tag;
+    		myField.focus();
+    	}
+    }
+/* ]]> */
+</script>
+
+<a href="javascript:grin(':?:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_question.gif" alt=":?:" title="疑问" /></a>
+<a href="javascript:grin(':razz:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_razz.gif" alt=":razz:" title="调皮" /></a>
+<a href="javascript:grin(':sad:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_sad.gif" alt=":sad:" title="难过" /></a>
+<a href="javascript:grin(':evil:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_evil.gif" alt=":evil:" title="抠鼻" /></a>
+<a href="javascript:grin(':!:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_exclaim.gif" alt=":!:" title="吓" /></a>
+<a href="javascript:grin(':smile:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_smile.gif" alt=":smile:" title="微笑" /></a>
+<a href="javascript:grin(':oops:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_redface.gif" alt=":oops:" title="憨笑" /></a>
+<a href="javascript:grin(':grin:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_biggrin.gif" alt=":grin:" title="坏笑" /></a>
+<a href="javascript:grin(':eek:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_surprised.gif" alt=":eek:" title="惊讶" /></a>
+<a href="javascript:grin(':shock:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_eek.gif" alt=":shock:" title="发呆" /></a>
+<a href="javascript:grin(':???:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_confused.gif" alt=":???:" title="撇嘴" /></a>
+<a href="javascript:grin(':cool:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_cool.gif" alt=":cool:" title="大兵" /></a>
+<a href="javascript:grin(':lol:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_lol.gif" alt=":lol:" title="偷笑" /></a>
+<a href="javascript:grin(':mad:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_mad.gif" alt=":mad:" title="咒骂" /></a>
+<a href="javascript:grin(':twisted:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_twisted.gif" alt=":twisted:" title="发怒" /></a>
+<a href="javascript:grin(':roll:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_rolleyes.gif" alt=":roll:" title="白眼" /></a>
+<a href="javascript:grin(':wink:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_wink.gif" alt=":wink:" title="鼓掌" /></a>
+<a href="javascript:grin(':idea:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_idea.gif" alt=":idea:" title="酷" /></a>
+<a href="javascript:grin(':arrow:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_arrow.gif" alt=":arrow:" title="擦汗" /></a>
+<a href="javascript:grin(':neutral:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_neutral.gif" alt=":neutral:" title="亲亲" /></a>
+<a href="javascript:grin(':cry:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_cry.gif" alt=":cry:" title="大哭" /></a>
+<a href="javascript:grin(':mrgreen:')"><img src="http://www.zsythink.net/wp-content/themes/begin/img/smilies/icon_mrgreen.gif" alt=":mrgreen:" title="呲牙" /></a>
+<br /></p>
+					<p class="comment-form-comment"><textarea id="comment" name="comment" rows="4" tabindex="1"></textarea></p>
+
+					<p class="comment-tool">
+											<a class="tool-img" href='javascript:embedImage();' title="插入图片"><i class="icon-img"></i><i class="fa fa-picture-o"></i></a>
+											<a class="emoji" href="" title="插入表情"><i class="fa fa-meh-o"></i></a>
+					</p>
+
+					
+					<div id="comment-author-info">
+						<p class="comment-form-author">
+							<label for="author">昵称<span class="required">*</span></label>
+							<input type="text" name="author" id="author" class="commenttext" value="" tabindex="2" />
+						</p>
+						<p class="comment-form-email">
+							<label for="email">邮箱<span class="required">*</span></label>
+							<input type="text" name="email" id="email" class="commenttext" value="" tabindex="3" />
+						</p>
+						<p class="comment-form-url">
+							<label for="url">网址</label>
+							<input type="text" name="url" id="url" class="commenttext" value="" tabindex="4" />
+						</p>
+											</div>
+					
+					<div class="qaptcha"></div>
+
+					<div class="clear"></div>
+					<p class="form-submit">
+						<input id="submit" name="submit" type="submit" tabindex="5" value="提交评论"/>
+						<input type='hidden' name='comment_post_ID' value='2311' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+					</p>
+
+					<span class="mail-notify">
+													<input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" class="notify" value="comment_mail_notify" />
+												<label for="comment_mail_notify"><span>有回复时邮件通知我</span></label>
+					</span>
+				</form>
+
+	 				</div>
+	
+	
+	
+		<h2 class="comments-title wow fadeInUp" data-wow-delay="0.3s">
+			目前评论：5 &nbsp;&nbsp;其中：访客&nbsp;&nbsp;4 &nbsp;&nbsp;博主&nbsp;&nbsp;1  					</h2>
+
+		<ol class="comment-list">
+			
+	<li class="comments-anchor"><ul id="anchor-comment-2468"></ul></li>
+	<li class="comment even thread-even depth-1 parent" id="comment-2468">
+			<div id="div-comment-2468" class="comment-body">
+		<div class="comment-author vcard">
+					<img class="avatar" src="http://www.zsythink.net/wp-content/themes/begin/img/load-avatar.gif" alt="avatar" data-original="https://secure.gravatar.com/avatar/57855cd8cabcf0fd2368378f8b83e1fc?s=128" />				<!--<cite class="fn">nc -l 520</cite> <span class="says">:</span>-->
+		<strong>
+						nc -l 520					</strong>
+				<a class="vip vip1" title="评论达人 VIP.1"><i class="fa fa-heart"></i><span class="lv">1</span></a>		<span class="comment-meta commentmetadata">
+			<a href="http://www.zsythink.net/archives/2311/#comment-2468"></a><br />
+			<span class="comment-aux">
+				<span class="reply"><a rel='nofollow' class='comment-reply-link' href='http://www.zsythink.net/archives/2311?replytocom=2468#respond' onclick='return addComment.moveForm( "div-comment-2468", "2468", "respond", "2311" )' aria-label='回复给nc -l 520'>回复</a></span>
+				2019年3月22日 下午9:36																	<span class="floor">
+						&nbsp;沙发											</span>
+							</span>
+		</span>
+	</div>
+	<p>总结的特好，但是都说运维是吃青春饭，你怎么看</p>
+			</div>
+	<ul class="children">
+
+	<li class="comments-anchor"><ul id="anchor-comment-2511"></ul></li>
+	<li class="comment odd alt depth-2 wow fadeInUp" id="comment-2511">
+			<div id="div-comment-2511" class="comment-body">
+		<div class="comment-author vcard">
+					<img class="avatar" src="http://www.zsythink.net/wp-content/themes/begin/img/load-avatar.gif" alt="avatar" data-original="https://secure.gravatar.com/avatar/b30b84c3d0b90acfdb5e9797aa7e320f?s=128" />				<!--<cite class="fn">木木</cite> <span class="says">:</span>-->
+		<strong>
+						木木					</strong>
+				<a class="vip vip0" title="评论达人 VIP.0"><i class="fa fa-heart-o"></i><span class="lv">0</span></a>		<span class="comment-meta commentmetadata">
+			<a href="http://www.zsythink.net/archives/2311/#comment-2511"></a><br />
+			<span class="comment-aux">
+				<span class="reply"><a rel='nofollow' class='comment-reply-link' href='http://www.zsythink.net/archives/2311?replytocom=2511#respond' onclick='return addComment.moveForm( "div-comment-2511", "2511", "respond", "2311" )' aria-label='回复给木木'>回复</a></span>
+				2019年4月4日 下午8:37																	<span class="floor">
+												&nbsp;1层					</span>
+							</span>
+		</span>
+	</div>
+	<p><span class="at">@<a href="#comment-2468">nc -l 520</a></span> &#8230;.互联网那个不是，，</p>
+			</div>
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+	<li class="comments-anchor"><ul id="anchor-comment-1389"></ul></li>
+	<li class="comment even thread-odd thread-alt depth-1 wow fadeInUp" id="comment-1389">
+			<div id="div-comment-1389" class="comment-body">
+		<div class="comment-author vcard">
+					<img class="avatar" src="http://www.zsythink.net/wp-content/themes/begin/img/load-avatar.gif" alt="avatar" data-original="https://secure.gravatar.com/avatar/438cc82be6eaba9201972cfd5e780b3a?s=128" />				<!--<cite class="fn">tex</cite> <span class="says">:</span>-->
+		<strong>
+						tex					</strong>
+				<a class="vip vip1" title="评论达人 VIP.1"><i class="fa fa-heart"></i><span class="lv">1</span></a>		<span class="comment-meta commentmetadata">
+			<a href="http://www.zsythink.net/archives/2311/#comment-1389"></a><br />
+			<span class="comment-aux">
+				<span class="reply"><a rel='nofollow' class='comment-reply-link' href='http://www.zsythink.net/archives/2311?replytocom=1389#respond' onclick='return addComment.moveForm( "div-comment-1389", "1389", "respond", "2311" )' aria-label='回复给tex'>回复</a></span>
+				2018年5月28日 上午9:56																	<span class="floor">
+						&nbsp;板凳											</span>
+							</span>
+		</span>
+	</div>
+	<p>博主的变量处理真的实用,不管是我自己在学习的shell脚本还是用别人脚本出错都能看的懂了。</p>
+			</div>
+	</li><!-- #comment-## -->
+
+	<li class="comments-anchor"><ul id="anchor-comment-818"></ul></li>
+	<li class="comment odd alt thread-even depth-1 parent" id="comment-818">
+			<div id="div-comment-818" class="comment-body">
+		<div class="comment-author vcard">
+					<img class="avatar" src="http://www.zsythink.net/wp-content/themes/begin/img/load-avatar.gif" alt="avatar" data-original="https://secure.gravatar.com/avatar/bda1917061738d5fb2dfe04c39ccfe99?s=128" />				<!--<cite class="fn">早</cite> <span class="says">:</span>-->
+		<strong>
+						早					</strong>
+				<a class="vip vip3" title="评论达人 VIP.3"><i class="fa fa-heart"></i><span class="lv">3</span></a>		<span class="comment-meta commentmetadata">
+			<a href="http://www.zsythink.net/archives/2311/#comment-818"></a><br />
+			<span class="comment-aux">
+				<span class="reply"><a rel='nofollow' class='comment-reply-link' href='http://www.zsythink.net/archives/2311?replytocom=818#respond' onclick='return addComment.moveForm( "div-comment-818", "818", "respond", "2311" )' aria-label='回复给早'>回复</a></span>
+				2017年10月8日 下午4:43																	<span class="floor">
+						&nbsp;地板											</span>
+							</span>
+		</span>
+	</div>
+	<p>朱兄，在掌握了LINUX基础后真的不知有什么工作可以找？</p>
+			</div>
+	<ul class="children">
+
+	<li class="comments-anchor"><ul id="anchor-comment-820"></ul></li>
+	<li class="comment byuser comment-author-wpadmin bypostauthor even depth-2 wow fadeInUp" id="comment-820">
+			<div id="div-comment-820" class="comment-body">
+		<div class="comment-author vcard">
+					<img class="avatar" src="http://www.zsythink.net/wp-content/themes/begin/img/load-avatar.gif" alt="avatar" data-original="http://www.zsythink.net/wp-content/uploads/2016/12/wpadmin_avatar-64x61.jpg" />				<!--<cite class="fn"><a href='http://www.zsythink.net/' rel='external nofollow' class='url'>朱双印</a></cite> <span class="says">:</span>-->
+		<strong>
+						<a href='http://www.zsythink.net/wp-content/themes/begin/inc/go.php?url=http://www.zsythink.net/' rel='external nofollow' target='_blank' class='url'>朱双印</a>					</strong>
+		<span class="author-admin">Admin</span>				<span class="comment-meta commentmetadata">
+			<a href="http://www.zsythink.net/archives/2311/#comment-820"></a><br />
+			<span class="comment-aux">
+				<span class="reply"><a rel='nofollow' class='comment-reply-link' href='http://www.zsythink.net/archives/2311?replytocom=820#respond' onclick='return addComment.moveForm( "div-comment-820", "820", "respond", "2311" )' aria-label='回复给朱双印'>回复</a></span>
+				2017年10月9日 上午10:06																	<span class="floor">
+												&nbsp;1层					</span>
+							</span>
+		</span>
+	</div>
+	<p><span class="at">@<a href="#comment-818">早</a></span> &#8230;&#8230;顺其自然吧兄弟，找一个基础运维的工作，入门就好了，加油~~</p>
+			</div>
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+					</ol><!-- .comment-list -->
+
+		
+	
+</div>
+<!-- #comments -->				
+			
+		</main><!-- .site-main -->
+	</div><!-- .content-area -->
+
+<div id="sidebar" class="widget-area all-sidebar">
+
+	
+	
+			<aside id="php_text-2" class="widget php_text wow fadeInUp" data-wow-delay="0.3s"><h3 class="widget-title"><i class="fa fa-bars"></i>提示：</h3><div class="textwidget widget-text"><p>对于本站而言<br />
+不同的搜索引擎所收录的文章不同<br />
+某些内容在"百度"中可能并未收录<br />
+可以尝试在"360"中进行搜索<br />
+反之亦然<br />
+如果在百度、360中均为搜索到<br />
+可尝试在本站默认搜索框中搜索</p>
+</div><div class="clear"></div></aside>	
+	</div>
+
+<div class="clear"></div>	</div><!-- .site-content -->
+
+	<div class="clear"></div>
+	
+	
+	<footer id="colophon" class="site-footer wow fadeInUp" data-wow-delay="0.3s" role="contentinfo">
+		<div class="site-info">
+			Copyright © www.zsythink.net 版权所有. 京ICP备16062608号			<span class="add-info">
+				<a title="朱双印博客|Linux运维从业者" href="http://www.zsythink.net/" target="_blank"><img src="http://www.zsythink.net/wp-content/uploads/2016/12/水印.png" alt="linux运维" /></a>							</span>
+		</div><!-- .site-info -->
+	</footer><!-- .site-footer -->
+
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+<ul id="scroll">
+	<li class="log log-no"><a class="log-button" title="文章目录"><i class="fa fa-bars"></i></a><div class="log-prompt"><div class="log-arrow">文章目录</div></div></li>
+	<li><a class="scroll-h" title="返回顶部"><i class="fa fa-angle-up"></i></a></li>
+	<li><a class="scroll-c" title="评论"><i class="fa fa-comment-o"></i></a></li>	<li><a class="scroll-b" title="转到底部"><i class="fa fa-angle-down"></i></a></li>
+					<li class="qr-site"><a href="javascript:void(0)" class="qr" title="本页二维码"><i class="fa fa-qrcode"></i><span class="qr-img"><span id="output"><img class="alignnone" src="http://www.zsythink.net/wp-content/uploads/2016/12/xd.jpg" alt="icon"/></span><span class="arrow arrow-z"><i class="fa fa-caret-right"></i></span><span class="arrow arrow-y"><i class="fa fa-caret-right"></i></span></span></a></li>
+		<script type="text/javascript">$(document).ready(function(){if(!+[1,]){present="table";} else {present="canvas";}$('#output').qrcode({render:present,text:window.location.href,width:"150",height:"150"});});</script>
+	</ul>
+
+</div><!-- .site -->
+
+<script type="text/javascript">SyntaxHighlighter.all();</script><script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/superfish.js?ver=2017.05.04'></script>
+<script type='text/javascript' src='//www.zsythink.net/wp-content/themes/begin/js/carousel.min.js?ver=2017.05.04'></script>
+<script type="text/javascript">var ias=$.ias({container:"#comments",item:".comment-list",pagination:".scroll-links",next:".scroll-links .nav-previous a",});ias.extension(new IASTriggerExtension({text:'<i class="fa fa-chevron-circle-down"></i>更多',offset: 0,}));ias.extension(new IASSpinnerExtension());ias.extension(new IASNoneLeftExtension({text:'已是最后',}));ias.on('rendered',function(items){$("img").lazyload({effect: "fadeIn",failure_limit: 10});});</script>
+
+</body>
+</html>
