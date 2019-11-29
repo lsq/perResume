@@ -73,6 +73,7 @@ build_script:
     #- bash -x aria_build.sh
     #- bash -x texlive.sh
     #- bash -x htmltomd.sh
+  - bash -x termux-unstable.sh
 artifacts:
   - path: $APPVEYOR_JOB_ID
     #- path: src-
