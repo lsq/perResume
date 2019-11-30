@@ -94,11 +94,10 @@ voc_jd(){
   local jd_user_id="e31a789a6d08d265f834c9a420a2de9c"
   local jd_user_key_f="$1"
   local utf8_str="$2"
+  local uuid_str=$(uuid 2>/dev/null || uuidgen)
   local timestamp=$(get_timestamp)
-  local uuid_str=$(uuid)
   local signkey=$(signstr "$jd_user_key_f" "$timestamp")
-  local querystr="?appkey=${jd_user_id}&timestamp=${timestamp}&sign=${signkey}"
-#  local header_str='-H "Service-Type: synthesis" -H "Request-Id: '${uuid_str}'" -H "Sequence-Id: -1" -H "Protocol: 1" -H "Net-State: 5" -H "Applicator: 0" -H "Property: {"platform": "Linux", "version": "0.0.0.1", "parameters": {"aue": "1", "vol": "2.0", "sr": "24000", "sp": "1.0", "tim": "1", "tte": "1"}}"'
+  local querystr="appkey=${jd_user_id}&timestamp=${timestamp}&sign=${signkey}"
   #local jd_url_pic=
 
   #curl -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "imageBase64Str=$base64_pic" "${jd_host_url2}${querystr}"
@@ -107,10 +106,13 @@ voc_jd(){
   #curl -v -H "Content-Type: image/jpeg" -F 'file=@'${local_pic}';type=image/jpeg' "${jd_host_url1}${querystr}"
   #curl -v -F 'file=@'${local_pic}';type=image/jpeg' "${jd_host_url1}${querystr}"
   # http://blog.chinaunix.net/uid-22312037-id-4209467.html
-  curl -v \
-  -H "Service-Type: synthesis" -H "Request-Id: ${uuid_str}" -H "Sequence-Id: -1" -H "Protocol: 1" -H "Net-State: 1" -H "Applicator: 1" \
-  -H "Property: {\"platform\": \"Linux\", \"version\": \"0.0.0.1\", \"parameters\": {\"aue\": \"0\", \"vol\": \"2.0\", \"sr\": \"24000\", \"sp\": \"1.0\", \"tim\": \"1\", \"tte\": \"1\"}}"\
-  -d "body=$utf8_str" "${jd_host_url1}${querystr}"
+  allquery="Service-Type=synthesis&Request-Id=${uuid_str}&Sequence-Id=-1&Protocol=1&Net-State=1&Applicator=1&Property={\"platform\":\"Linux\", \"version\":\"0.0.0.1\", \"parameters\": {\"aue\":\"0\", \"vol\":\"2.0\", \"sr\":\"24000\", \"sp\":\"0.75\", \"tim\":\"1\", \"tte\":\"1\"}}&${querystr}"
+  #curl -v $allquery -d "body=$utf8_str" 
+  # cat >curlsh.sh <<EOF
+   curl -v "$jd_host_url1?$allquery"
+  # ${jd_host_url1}?Service-Type=synthesis&Request-Id=${uuid_str}&Sequence-Id=-1&Protocol=1&Net-State=1&Applicator=1&Property={"platform":"Linux", "version":"0.0.0.1", "parameters": {"aue":"0", "vol":"2.0", "sr":"24000", "sp":"0.75", "tim":"1", "tte":"1"}}&${querystr}&body="$utf8_str"
+# EOF
+  # sed -i 'N;s/\n/ /;s/&/\\&/g' curlsh.sh
 }
 set +x
 ## 自己把base64编码后的数据再进行urlencode之后就可以了。用curl自带的不行
@@ -158,6 +160,8 @@ response=$(ocr_jd_local_pic jd.k "$local_pic")
 echo -----------voice test -----------
 #u_str="三十六口缸，九支船来装，装单不装双，就是说每支装的数只能是奇数，不能为偶数，请问该怎么装才能过河？"
 u_str="三十六"
-resp_voice=$(voc_jd jd.k "$u_str")
-printf "$resp_voice" |sed -n 's/.*audio":"\(.*\)".*/\1/p' >vb.t
-base64 -d -i vb.t >m.mp3
+voc_jd jd.k "$u_str"
+# resp_voice=$(voc_jd jd.k "$u_str")
+# printf "$resp_voice" |sed -n 's/.*audio":"\(.*\)".*/\1/p' >vb.t
+# base64 -d -i vb.t > ${u_str}.wav
+
