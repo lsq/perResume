@@ -108,9 +108,9 @@ voc_jd(){
   #curl -v -F 'file=@'${local_pic}';type=image/jpeg' "${jd_host_url1}${querystr}"
   # http://blog.chinaunix.net/uid-22312037-id-4209467.html
   curl -v \
-  -H "Service-Type: synthesis" -H "Request-Id: ${uuid_str}" -H "Sequence-Id: -1" -H "Protocol: 1" -H "Net-State: 5" -H "Applicator: 0" \
-  -H "Property: {\"platform\": \"Linux\", \"version\": \"0.0.0.1\", \"parameters\": {\"aue\": \"1\", \"vol\": \"2.0\", \"sr\": \"24000\", \"sp\": \"1.0\", \"tim\": \"1\", \"tte\": \"1\"}}"\
-  -d "$utf8_str" "${jd_host_url1}${querystr}"
+  -H "Service-Type: synthesis" -H "Request-Id: ${uuid_str}" -H "Sequence-Id: -1" -H "Protocol: 1" -H "Net-State: 1" -H "Applicator: 1" \
+  -H "Property: {\"platform\": \"Linux\", \"version\": \"0.0.0.1\", \"parameters\": {\"aue\": \"0\", \"vol\": \"2.0\", \"sr\": \"24000\", \"sp\": \"1.0\", \"tim\": \"1\", \"tte\": \"1\"}}"\
+  -d "body=$utf8_str" "${jd_host_url1}${querystr}"
 }
 set +x
 ## 自己把base64编码后的数据再进行urlencode之后就可以了。用curl自带的不行
@@ -156,6 +156,8 @@ response=$(ocr_jd_local_pic jd.k "$local_pic")
 
 #fi
 echo -----------voice test -----------
-u_str="三十六口缸，九支船来装，装单不装双，就是说每支装的数只能是奇数，不能为偶数，请问该怎么装才能过河？"
+#u_str="三十六口缸，九支船来装，装单不装双，就是说每支装的数只能是奇数，不能为偶数，请问该怎么装才能过河？"
+u_str="三十六"
 resp_voice=$(voc_jd jd.k "$u_str")
-printf "$resp_voice"
+printf "$resp_voice" |sed -n 's/.*audio":"\(.*\)".*/\1/p' >vb.t
+base64 -d -i vb.t >m.mp3
