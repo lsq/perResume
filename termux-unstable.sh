@@ -3,7 +3,7 @@ package_name=geckodriver
 git clone https://github.com/termux/unstable-packages
 cd ./unstable-packages
 cp -rf disabled-packages/geckodriver/ packages/
-cp -rf disabled-packages/geckodriver/ $APPVEYOR_JOB_ID
+cp -rf disabled-packages/geckodriver/ $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/
 ls -al packages/geckodriver/
 sed -i '/docker exec --interactive --tty/s/--interactive --tty//' start-builder.sh
 source ./start-builder.sh
@@ -14,4 +14,4 @@ docker exec --tty "$CONTAINER_NAME" ls -al
 pwd
 ls -al
 ls -al termux-packages/debs
-cp termux-packages/debs/* $APPVEYOR_JOB_ID
+cp termux-packages/debs/* $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/
