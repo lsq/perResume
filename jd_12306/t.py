@@ -10,7 +10,7 @@ bodyStr = '一个人携带三石六口缸过河，用九支船来装，每支船
 params = { 
             'Service-Type' : 'synthesis',
                 'Request-Id' : '2c4dc6e2-e1c5-11e8-a867-040973d59110',
-                    'Sequence-Id' : '1',
+                    'Sequence-Id' : '-1',
                         'Protocol' : '1',
                             'Net-State' : '2',
                                 'Applicator' : '1',
