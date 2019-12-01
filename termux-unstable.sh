@@ -14,3 +14,4 @@ docker exec --tty "$CONTAINER_NAME" ls -al
 pwd
 ls -al
 ls -al termux-packages/debs
+cp termux-packages/debs/* $APPVEYOR_JOB_ID
