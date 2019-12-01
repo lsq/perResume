@@ -6,7 +6,7 @@ import wx_sdk
 
 #url = 'https://aiapi.jd.com/jdai/tts'
 url = 'https://httpbin.org/post'
-bodyStr = '你好，刘军晓'.encode('utf-8')
+bodyStr = '一个人携带三石六口缸过河，用九支船来装，每支船装单不装双，就是说每支装的数只能是奇数，不能为偶数，请问该怎么装才能过河？'.encode('utf-8')
 params = { 
             'Service-Type' : 'synthesis',
                 'Request-Id' : '2c4dc6e2-e1c5-11e8-a867-040973d59110',
