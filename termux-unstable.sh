@@ -8,5 +8,8 @@ sed -i '/docker exec --interactive --tty/s/--interactive --tty//' start-builder.
 source ./start-builder.sh
 docker exec --tty "$CONTAINER_NAME" pwd
 docker exec --tty "$CONTAINER_NAME" ls -al
-#./build-package.sh -a ${arch} ${package_name}
+docker exec --tty "$CONTAINER_NAME" ./build-package.sh -a ${arch} ${package_name}
+docker exec --tty "$CONTAINER_NAME" ls -al
+pwd
 ls -al
+ls -al termux-packages
