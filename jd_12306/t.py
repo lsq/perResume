@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 # 本代码仅供参考，请根据实际情况进行调整
 #　requests 用法参考https://blog.csdn.net/dugushangliang/article/details/90473735
-import wx_sdk
+from wx_sdk import wx_sdk
 
-#url = 'https://aiapi.jd.com/jdai/tts'
-url = 'https://httpbin.org/post'
+url = 'https://aiapi.jd.com/jdai/tts'
+#url = 'https://httpbin.org/post'
 bodyStr = '一个人携带三石六口缸过河，用九支船来装，每支船装单不装双，就是说每支装的数只能是奇数，不能为偶数，请问该怎么装才能过河？'.encode('utf-8')
 params = { 
             'Service-Type' : 'synthesis',
