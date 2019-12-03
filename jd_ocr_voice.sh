@@ -181,7 +181,7 @@ response=$(ocr_jd_local_pic jd.k "$local_pic")
 
 #fi
 echo -----------voice test -----------
-u_str="一个人携带三石六口缸过河，用九支船来装，每支船装单不装双，就是说每支装的数只能是奇数，不能为偶数，请问该怎么装才能过河?"
+u_str="一个人携带三石六口缸过河，需要用九条船来装，每条船装单不装双，就是说，每条装的数只能是奇数，不能为偶数，请问该怎么装才能过河?"
 #u_str=$(echo -n "一个"|iconv -f utf-8 -t java)
 #u_str='\xe4\xb8'
 voc_jd jd.k "$u_str" |sed -n 's/.*audio":"\(.*\)".*/\1/p' > ${u_str}.base64
