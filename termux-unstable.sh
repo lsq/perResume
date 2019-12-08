@@ -10,7 +10,7 @@ curl -vD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/arch
 unzip -o m.zip 
 # eval $(gawk -F';' '/content-disposition/{printf $2}' gecko_header.txt)
 eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' gecko_header.txt)
-[ -d "${filename/%.zip}/test/geckodriver" ] && mv "${filename/%.zip}/test/geckodriver" geckodriver-$geckodriver_version || exit 1
+[ -d "${filename/%.zip}/testing/geckodriver" ] && mv "${filename/%.zip}/test/geckodriver" geckodriver-$geckodriver_version || exit 1
 tar cvzf geckodriver-$geckodriver_version.tar.gz geckodriver-$geckodriver_version
 cp geckodriver-$geckodriver_version.tar.gz termux-packages/
 pwd && ls -al
@@ -43,3 +43,22 @@ pwd
 ls -al
 ls -al termux-packages/debs
 cp termux-packages/debs/* $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/
+# disabled-packages/geckodriver/build.sh
+: <<'COMMENTSBLOCK'
+TERMUX_PKG_HOMEPAGE=https://github.com/mozilla/geckodriver
+TERMUX_PKG_DESCRIPTION="Proxy for using W3C WebDriver-compatible clients to interact with Gecko-based browsers"
+TERMUX_PKG_LICENSE="MPL-2.0"
+TERMUX_PKG_MAINTAINER="Leonid Plyushch <leonid.plyushch@gmail.com>"
+TERMUX_PKG_VERSION=0.25.0
+TERMUX_PKG_REVISION=1
+TERMUX_PKG_SRCURL=https://github.com/mozilla/geckodriver/archive/v$TERMUX_PKG_VERSION.tar.gz
+TERMUX_PKG_SHA256=9ba9b1be1a2e47ddd11216ce863903853975a4805e72b9ed5da8bcbcaebbcea9
+TERMUX_PKG_BUILD_IN_SRC=true
+
+termux_step_post_make_install() {
+	install -Dm700 \
+		"$TERMUX_PKG_SRCDIR/target/$CARGO_TARGET_NAME"/release/geckodriver \
+		"$TERMUX_PREFIX"/bin/
+}
+COMMENTSBLOCK
+
