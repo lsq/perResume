@@ -8,13 +8,13 @@ cd ./unstable-packages
 geckodriver_version="v0.26.0"
 curl -vD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/geckodriver
 unzip -o m.zip 
-eval $(gawk -F';' '/content-disposition/{print $2}' gecko_header.txt)
-[ -d "${filename/%.zip}/test"] && mv "${filename/%.zip}/test" geckodriver-$geckodriver_version
+eval $(gawk -F';' '/content-disposition/{printf $2}' gecko_header.txt)
+[ -d "${filename/%.zip}/test/geckodriver"] && mv "${filename/%.zip}/test/geckodriver" geckodriver-$geckodriver_version || exit 1
 tar cvzf geckodriver-$geckodriver_version.tar.gz geckodriver-$geckodriver_version
 cp geckodriver-$geckodriver_version.tar.gz termux-packages/
 pwd && ls -al
 tarhash=$(sha256sum geckodriver-$geckodriver_version.tar.gz | cut -f 1 -d ' ')
-sed -i 's/^\(TERMUX_PKG_SHA256=\).*/\1'"$tarhash"'
+sed -i 's/^\(TERMUX_PKG_SHA256=\).*/\1'"$tarhash"'/
         s/TERMUX_PKG_VERSION=0.25.0/TERMUX_PKG_VERSION='"${geckodriver_version/#v}"'/
 ' disabled-packages/geckodriver/build.sh
 
