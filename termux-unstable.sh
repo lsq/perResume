@@ -10,7 +10,7 @@ curl -vD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/arch
 unzip -o m.zip 
 # eval $(gawk -F';' '/content-disposition/{printf $2}' gecko_header.txt)
 eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' gecko_header.txt)
-[ -d "${filename/%.zip}/test/geckodriver"] && mv "${filename/%.zip}/test/geckodriver" geckodriver-$geckodriver_version || exit 1
+[ -d "${filename/%.zip}/test/geckodriver" ] && mv "${filename/%.zip}/test/geckodriver" geckodriver-$geckodriver_version || exit 1
 tar cvzf geckodriver-$geckodriver_version.tar.gz geckodriver-$geckodriver_version
 cp geckodriver-$geckodriver_version.tar.gz termux-packages/
 pwd && ls -al
