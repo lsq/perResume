@@ -27,14 +27,17 @@ cp -rf disabled-packages/geckodriver/ packages/
 cp -rf disabled-packages/geckodriver/ $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/
 ls -al packages/geckodriver/
 sed -i '/docker exec --interactive --tty/s/--interactive --tty//' start-builder.sh
+sed -i '/git submodule update --init/a\
+  sed -i '\''/for.* do/,/done/{\
+  /if curl/i \\  if [[ $URL =~ '"${geckodriver_version}"' ]];then\\\
+    cp $TERMUX_SCRIPTDIR/'"geckodriver-$geckodriver_version.tar.gz"' "$DESTINATION"\\\
+    return\\\
+  else\
+  /done/i \\  fi\
+}'\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_download.sh
+' ./start-builder.sh
+cat ./start-builder.sh
 source ./start-builder.sh
-sed -i '/for.* do/,/done/{
-  /if curl/i \  if [[ $URL =~ geckodriver-'"${geckodriver_version}"' ]];then\
-    cp $TERMUX_SCRIPTDIR/'"geckodriver-$geckodriver_version.tar.gz"' "$DESTINATION"\
-    return\
-  else
-  /done/i \  fi
-}' termux-packages/scripts/build/termux_download.sh
 docker exec --tty "$CONTAINER_NAME" pwd
 docker exec --tty "$CONTAINER_NAME" ls -al
 docker exec --tty "$CONTAINER_NAME" bash -x ./build-package.sh -a ${arch} ${package_name}
