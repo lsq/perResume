@@ -2,10 +2,30 @@ arch="aarch64"
 package_name=geckodriver
 git clone https://github.com/termux/unstable-packages
 cd ./unstable-packages
-: <<'COMMENTSBLOCK'
-sed -i 's/^\(TERMUX_PKG_SHA256=\).*/\1c6acabacf8063ff59926f6b8721968a6eaaa35050b2988868a2d8d37ef7c90dd/;
-        s/TERMUX_PKG_VERSION=0.25.0/TERMUX_PKG_VERSION=0.26.0/
+#curl -vOJL https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/geckodriver
+# use -I only print response head
+# use -D dump respose head
+geckodriver_version="v0.26.0"
+curl -vD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/geckodriver
+unzip -o m.zip 
+eval $(gawk -F';' '/content-disposition/{print $2}' gecko_header.txt)
+[ -d "${filename/%.zip}/test"] && mv "${filename/%.zip}/test" geckodriver-$geckodriver_version
+tar cvzf geckodriver-$geckodriver_version.tar.gz geckodriver-$geckodriver_version
+cp geckodriver-$geckodriver_version.tar.gz termux-packages/
+pwd && ls -al
+tarhash=$(sha256sum geckodriver-$geckodriver_version.tar.gz | cut -f 1 -d ' ')
+sed -i 's/^\(TERMUX_PKG_SHA256=\).*/\1'"$tarhash"'
+        s/TERMUX_PKG_VERSION=0.25.0/TERMUX_PKG_VERSION='"${geckodriver_version/#v}"'/
 ' disabled-packages/geckodriver/build.sh
+
+sed -i '/for.* do/,/done/{
+  /if curl/i \  if [[ $URL ~= geckodriver-'"${geckodriver_version}"' ]];then\
+    cp $TERMUX_SCRIPTDIR/'"geckodriver-$geckodriver_version.tar.gz"' "$DESTINATION"\
+    return\
+  else
+  /done/i \  fi
+}' termux-packages/scripts/build/termux_download.sh
+: <<'COMMENTSBLOCK'
 sed -i '$a \
   echo $CARGO_TARGET_NAME' disabled-packages/geckodriver/build.sh
 COMMENTSBLOCK
