@@ -19,13 +19,6 @@ sed -i 's/^\(TERMUX_PKG_SHA256=\).*/\1'"$tarhash"'/
         s/TERMUX_PKG_VERSION=0.25.0/TERMUX_PKG_VERSION='"${geckodriver_version/#v}"'/
 ' disabled-packages/geckodriver/build.sh
 
-sed -i '/for.* do/,/done/{
-  /if curl/i \  if [[ $URL ~= geckodriver-'"${geckodriver_version}"' ]];then\
-    cp $TERMUX_SCRIPTDIR/'"geckodriver-$geckodriver_version.tar.gz"' "$DESTINATION"\
-    return\
-  else
-  /done/i \  fi
-}' termux-packages/scripts/build/termux_download.sh
 : <<'COMMENTSBLOCK'
 sed -i '$a \
   echo $CARGO_TARGET_NAME' disabled-packages/geckodriver/build.sh
@@ -35,6 +28,13 @@ cp -rf disabled-packages/geckodriver/ $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/
 ls -al packages/geckodriver/
 sed -i '/docker exec --interactive --tty/s/--interactive --tty//' start-builder.sh
 source ./start-builder.sh
+sed -i '/for.* do/,/done/{
+  /if curl/i \  if [[ $URL ~= geckodriver-'"${geckodriver_version}"' ]];then\
+    cp $TERMUX_SCRIPTDIR/'"geckodriver-$geckodriver_version.tar.gz"' "$DESTINATION"\
+    return\
+  else
+  /done/i \  fi
+}' termux-packages/scripts/build/termux_download.sh
 docker exec --tty "$CONTAINER_NAME" pwd
 docker exec --tty "$CONTAINER_NAME" ls -al
 docker exec --tty "$CONTAINER_NAME" bash -x ./build-package.sh -a ${arch} ${package_name}
