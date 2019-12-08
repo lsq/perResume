@@ -12,7 +12,6 @@ unzip -o m.zip
 eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' gecko_header.txt)
 [ -d "${filename/%.zip}/testing/geckodriver" ] && mv "${filename/%.zip}/testing/geckodriver" geckodriver-$geckodriver_version || exit 1
 tar cvzf geckodriver-$geckodriver_version.tar.gz geckodriver-$geckodriver_version
-cp geckodriver-$geckodriver_version.tar.gz termux-packages/
 pwd && ls -al
 tarhash=$(sha256sum geckodriver-$geckodriver_version.tar.gz | cut -f 1 -d ' ')
 sed -i 's/^\(TERMUX_PKG_SHA256=\).*/\1'"$tarhash"'/
@@ -34,7 +33,8 @@ sed -i '/git submodule update --init/a\
     return\\\
   else\
   /done/i \\  fi\
-}'\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_download.sh
+}'\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_download.sh\
+cp geckodriver-'"$geckodriver_version"'.tar.gz "${REPOROOT}/${BUILD_ENVIRONMENT}"/
 ' ./start-builder.sh
 cat ./start-builder.sh
 source ./start-builder.sh
