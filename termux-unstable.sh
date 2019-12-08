@@ -29,7 +29,7 @@ ls -al packages/geckodriver/
 sed -i '/docker exec --interactive --tty/s/--interactive --tty//' start-builder.sh
 source ./start-builder.sh
 sed -i '/for.* do/,/done/{
-  /if curl/i \  if [[ $URL ~= geckodriver-'"${geckodriver_version}"' ]];then\
+  /if curl/i \  if [[ $URL =~ geckodriver-'"${geckodriver_version}"' ]];then\
     cp $TERMUX_SCRIPTDIR/'"geckodriver-$geckodriver_version.tar.gz"' "$DESTINATION"\
     return\
   else
