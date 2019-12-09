@@ -67,8 +67,9 @@ sed -i '\''s/TERMUX_PKG_VERSION=1.38.0/TERMUX_PKG_VERSION=1.39.0/\
 sed -ir '\''s/(mkdir\ -p\ "$TERMUX_PKG_SRCDIR")/#\\1/\
 /tar\ xf\ "$file"\ -C\ "$TERMUX_PKG_SRCDIR"/{\
 s/(tar\ xf\ "$file"\ -C\ )"$TERMUX_PKG_SRCDIR"/\\1"$TERMUX_TOPDIR\\\/$TERMUX_PKG_NAME"/\
-a \
+a \\\
 mv "$TERMUX_TOPDIR/$TERMUX_PKG_NAME"/geckodriver "$TERMUX_PKG_SRCDIR"\
+}\
 '\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_step_extract_package\
 
 ' ./start-builder.sh
