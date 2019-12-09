@@ -17,8 +17,8 @@ eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' gecko_header.txt)
 # eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' ./mozbase_header.txt)
 # [ -d "${filename/%.zip}/testing/mozbase" ] && mv "${filename/%.zip}/testing/mozbase" geckodriver-$geckodriver_version/ || exit 1
 # sed -ri 's/(path = \").(.\/mozbase\/)/\1\2/' geckodriver-$geckodriver_version/Cargo.toml
-tar cvzf geckodriver-$geckodriver_version.tar.gz geckodriver-$geckodriver_version
-pwd && ls -al
+tar czf geckodriver-$geckodriver_version.tar.gz geckodriver-$geckodriver_version
+pwd && ls -alh
 tarhash=$(sha256sum geckodriver-$geckodriver_version.tar.gz | cut -f 1 -d ' ')
 sed -i 's/^\(TERMUX_PKG_SHA256=\).*/\1'"$tarhash"'/
         s/TERMUX_PKG_VERSION=0.25.0/TERMUX_PKG_VERSION='"${geckodriver_version/#v}"'/
@@ -64,9 +64,11 @@ rustup target list\
 cat  "${REPOROOT}/${BUILD_ENVIRONMENT}/scripts/build/setup/termux_setup_rust.sh"\
 sed -i '\''s/TERMUX_PKG_VERSION=1.38.0/TERMUX_PKG_VERSION=1.39.0/\
 '\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/packages/rust/build.sh\
-sed -ir '\''s/mkdir\ -p\ "$TERMUX_PKG_SRCDIR")/#\\1/\
-s/(tar\ xf\ "$file"\ -C\ )"$TERMUX_PKG_SRCDIR"/\\1"$TERMUX_TOPDIR\/$TERMUX_PKG_NAME"/\
-mv  "$TERMUX_TOPDIR/$TERMUX_PKG_NAME"/geckodriver "$TERMUX_PKG_SRCDIR"\
+sed -ir '\''s/(mkdir\ -p\ "$TERMUX_PKG_SRCDIR")/#\\1/\
+/tar\ xf\ "$file"\ -C\ "$TERMUX_PKG_SRCDIR"/{\
+s/(tar\ xf\ "$file"\ -C\ )"$TERMUX_PKG_SRCDIR"/\\1"$TERMUX_TOPDIR\\\/$TERMUX_PKG_NAME"/\
+a \
+mv "$TERMUX_TOPDIR/$TERMUX_PKG_NAME"/geckodriver "$TERMUX_PKG_SRCDIR"\
 '\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_step_extract_package\
 
 ' ./start-builder.sh
