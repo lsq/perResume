@@ -6,14 +6,14 @@ cd ./unstable-packages
 # use -I only print response head
 # use -D dump respose head
 geckodriver_version="v0.26.0"
-curl -vD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/geckodriver
-unzip -o m.zip 
+curl -sfLD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/geckodriver
+unzip -qq -o m.zip 
 # eval $(gawk -F';' '/content-disposition/{printf $2}' gecko_header.txt)
 eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' gecko_header.txt)
 [ -d "${filename/%.zip}/testing/geckodriver" ] && mv "${filename/%.zip}/testing/geckodriver" geckodriver-$geckodriver_version || exit 1
 
 curl -vD ./mozbase_header.txt -o mz.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/mozbase
-unzip -o mz.zip
+unzip -qq -o mz.zip
 eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' ./mozbase_header.txt)
 [ -d "${filename/%.zip}/testing/mozbase" ] && mv "${filename/%.zip}/testing/mozbase" geckodriver-$geckodriver_version/ || exit 1
 sed -ri 's/(path = \").(.\/mozbase\/)/\1\2/' geckodriver-$geckodriver_version/Cargo.toml
@@ -63,7 +63,12 @@ rustup target list\
 \
 cat  "${REPOROOT}/${BUILD_ENVIRONMENT}/scripts/build/setup/termux_setup_rust.sh"\
 sed -i '\''s/TERMUX_PKG_VERSION=1.38.0/TERMUX_PKG_VERSION=1.39.0/\
-'\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/packages/rust/build.sh
+'\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/packages/rust/build.sh\
+sed -ir '\''s/mkdir\ -p\ "$TERMUX_PKG_SRCDIR")/#\\1/\
+s/(tar\ xf\ "$file"\ -C\ )"$TERMUX_PKG_SRCDIR"/\\1"$TERMUX_TOPDIR\/$TERMUX_PKG_NAME"/\
+mv  "$TERMUX_TOPDIR/$TERMUX_PKG_NAME"/geckodriver "$TERMUX_PKG_SRCDIR"
+'\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_step_extract_package\
+
 ' ./start-builder.sh
 cat ./start-builder.sh
 source ./start-builder.sh
