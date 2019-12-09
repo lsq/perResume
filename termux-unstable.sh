@@ -6,17 +6,17 @@ cd ./unstable-packages
 # use -I only print response head
 # use -D dump respose head
 geckodriver_version="v0.26.0"
-curl -sfLD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/geckodriver
+curl -sfLD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing
 unzip -qq -o m.zip 
 # eval $(gawk -F';' '/content-disposition/{printf $2}' gecko_header.txt)
 eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' gecko_header.txt)
-[ -d "${filename/%.zip}/testing/geckodriver" ] && mv "${filename/%.zip}/testing/geckodriver" geckodriver-$geckodriver_version || exit 1
+[ -d "${filename/%.zip}/testing/" ] && mv "${filename/%.zip}/testing" geckodriver-$geckodriver_version || exit 1
 
-curl -vD ./mozbase_header.txt -o mz.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/mozbase
-unzip -qq -o mz.zip
-eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' ./mozbase_header.txt)
-[ -d "${filename/%.zip}/testing/mozbase" ] && mv "${filename/%.zip}/testing/mozbase" geckodriver-$geckodriver_version/ || exit 1
-sed -ri 's/(path = \").(.\/mozbase\/)/\1\2/' geckodriver-$geckodriver_version/Cargo.toml
+# curl -vD ./mozbase_header.txt -o mz.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/mozbase
+# unzip -qq -o mz.zip
+# eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' ./mozbase_header.txt)
+# [ -d "${filename/%.zip}/testing/mozbase" ] && mv "${filename/%.zip}/testing/mozbase" geckodriver-$geckodriver_version/ || exit 1
+# sed -ri 's/(path = \").(.\/mozbase\/)/\1\2/' geckodriver-$geckodriver_version/Cargo.toml
 tar cvzf geckodriver-$geckodriver_version.tar.gz geckodriver-$geckodriver_version
 pwd && ls -al
 tarhash=$(sha256sum geckodriver-$geckodriver_version.tar.gz | cut -f 1 -d ' ')
