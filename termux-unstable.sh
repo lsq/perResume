@@ -36,7 +36,7 @@ sed -i '/git submodule update --init/a\
 }'\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_download.sh\
 cp geckodriver-'"$geckodriver_version"'.tar.gz "${REPOROOT}/${BUILD_ENVIRONMENT}"/\
 \
-sed -i '\''//a \\\
+sed -i '\''/sh $TERMUX_PKG_TMPDIR/rustup.sh	-y/a \\\
 #source $HOME/.cargo/env\\\
 cat $HOME/.cargo/env\\\
 #  rustup target install armv7-unknown-linux-gnueabihf\\\
