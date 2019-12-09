@@ -39,7 +39,7 @@ cp geckodriver-'"$geckodriver_version"'.tar.gz "${REPOROOT}/${BUILD_ENVIRONMENT}
 sed -i '\''/sh\ $TERMUX_PKG_TMPDIR\\/rustup.sh/{s/-y.*$/-y --default-toolchain=$CARGO_TARGET_NAME/\
   a \\\
 #source $HOME/.cargo/env\\\
-cat $HOME/.cargo/env\
+cat $HOME/.cargo/env\\\
 echo $CARGO_TARGET_NAME\\\
 pwd\\\
 \
