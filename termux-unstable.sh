@@ -64,7 +64,7 @@ rustup target list\
 cat  "${REPOROOT}/${BUILD_ENVIRONMENT}/scripts/build/setup/termux_setup_rust.sh"\
 sed -i '\''s/TERMUX_PKG_VERSION=1.38.0/TERMUX_PKG_VERSION=1.39.0/\
 '\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/packages/rust/build.sh\
-sed -ir '\''s/(mkdir\ -p\ "$TERMUX_PKG_SRCDIR")/#\\1/\
+sed -i -r '\''s/(mkdir\ -p\ "$TERMUX_PKG_SRCDIR")/#\\1/\
 /tar\ xf\ "$file"\ -C\ "$TERMUX_PKG_SRCDIR"/{\
 s/(tar\ xf\ "$file"\ -C\ )"$TERMUX_PKG_SRCDIR"/\\1"$TERMUX_TOPDIR\\\/$TERMUX_PKG_NAME"/\
 a \\\
