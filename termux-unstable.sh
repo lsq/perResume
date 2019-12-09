@@ -38,7 +38,9 @@ cp geckodriver-'"$geckodriver_version"'.tar.gz "${REPOROOT}/${BUILD_ENVIRONMENT}
 \
 sed -i '\''/sh\ $TERMUX_PKG_TMPDIR\\/rustup.sh/a \\\
 #source $HOME/.cargo/env\\\
-cat $HOME/.cargo/env\\\
+cat $HOME/.cargo/env\
+/export\ PATH=$HOME/a \\\
+echo $CARGO_TARGET_NAME\\\
 #  rustup target install armv7-unknown-linux-gnueabihf\\\
 rustup target list\\\
 #% cd testing/geckodriver\\\
