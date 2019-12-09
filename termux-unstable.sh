@@ -51,9 +51,13 @@ pwd\\\
 rustup target list\\\
 #% cd testing/geckodriver\\\
 #cargo build --release --target armv7-unknown-linux-gnueabihf\
+/rustup\ target\ add/a \\\
+rustup target list\
 '\'' "${REPOROOT}/${BUILD_ENVIRONMENT}/scripts/build/setup/termux_setup_rust.sh"\
 \
-cat  "${REPOROOT}/${BUILD_ENVIRONMENT}/scripts/build/setup/termux_setup_rust.sh"
+cat  "${REPOROOT}/${BUILD_ENVIRONMENT}/scripts/build/setup/termux_setup_rust.sh"\
+sed -i '\''s/TERMUX_PKG_VERSION=1.38.0/TERMUX_PKG_VERSION=1.39.0/\
+'\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/packages/rust/build.sh
 ' ./start-builder.sh
 cat ./start-builder.sh
 source ./start-builder.sh
