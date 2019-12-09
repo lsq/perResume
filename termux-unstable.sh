@@ -6,11 +6,13 @@ cd ./unstable-packages
 # use -I only print response head
 # use -D dump respose head
 geckodriver_version="v0.26.0"
-curl -vD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/geckodriver
+curl -vD ./gecko_header.txt -o m.zip https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing
 unzip -o m.zip 
 # eval $(gawk -F';' '/content-disposition/{printf $2}' gecko_header.txt)
 eval $(sed -rn 's/(.*; *)(filename=.*\>).*/\2/p' gecko_header.txt)
 [ -d "${filename/%.zip}/testing/geckodriver" ] && mv "${filename/%.zip}/testing/geckodriver" geckodriver-$geckodriver_version || exit 1
+[ -d "${filename/%.zip}/testing/mozbase" ] && mv "${filename/%.zip}/testing/mozbase" geckodriver-$geckodriver_version/ || exit 1
+# https://hg.mozilla.org/mozilla-central/archive/666b11c33feeefe55eac9412d6ab4e4eecfdcc4a.zip/testing/mozbase/
 tar cvzf geckodriver-$geckodriver_version.tar.gz geckodriver-$geckodriver_version
 pwd && ls -al
 tarhash=$(sha256sum geckodriver-$geckodriver_version.tar.gz | cut -f 1 -d ' ')
