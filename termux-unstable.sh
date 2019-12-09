@@ -1,5 +1,6 @@
 arch="aarch64"
 package_name=geckodriver
+sed --version
 git clone https://github.com/termux/unstable-packages
 cd ./unstable-packages
 #curl -vOJL https://hg.mozilla.org/mozilla-central/archive/tip.zip/testing/geckodriver
