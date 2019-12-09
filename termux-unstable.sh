@@ -36,15 +36,18 @@ sed -i '/git submodule update --init/a\
 }'\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_download.sh\
 cp geckodriver-'"$geckodriver_version"'.tar.gz "${REPOROOT}/${BUILD_ENVIRONMENT}"/\
 \
-sed -i '\''/sh\ $TERMUX_PKG_TMPDIR\\/rustup.sh/a \\\
+sed -i '\''/sh\ $TERMUX_PKG_TMPDIR\\/rustup.sh/{s/-y.*$/-y --default-toolchain=$CARGO_TARGET_NAME/\
+  a \\\
 #source $HOME/.cargo/env\\\
 cat $HOME/.cargo/env\
-/export\ PATH=$HOME/a \\\
 echo $CARGO_TARGET_NAME\\\
+pwd\\\
+\
+}\
+/export\ PATH=$HOME/a \\\
 #  rustup target install armv7-unknown-linux-gnueabihf\\\
 rustup target list\\\
 #% cd testing/geckodriver\\\
-pwd\\\
 #cargo build --release --target armv7-unknown-linux-gnueabihf\
 '\'' "${REPOROOT}/${BUILD_ENVIRONMENT}/scripts/build/setup/termux_setup_rust.sh"\
 \
