@@ -68,6 +68,7 @@ sed -i '\''s/TERMUX_PKG_VERSION=1.38.0/TERMUX_PKG_VERSION=1.39.0/\
 sed --version\
 #sed -i -r '\''s/(mkdir\ -p\ "$TERMUX_PKG_SRCDIR")/#\\1/\
 sed -i '\''\
+/mkdir\ -p\ "$TERMUX_PKG_SRCDIR"/,/tar\ xf\ "$file"/{
 /mkdir\ -p\ "$TERMUX_PKG_SRCDIR"/i \\\
 if [[ $file =~ '"$geckodriver_version"' ]]; then\\\
 #s/\\(mkdir\ -p\ "$TERMUX_PKG_SRCDIR"\\)/\#\\1/\\\
@@ -81,7 +82,7 @@ pwd && ls -alh\\\
 ls -alh "$TERMUX_PKG_SRCDIR"\\\
 else\
 /tar\ xf\ "$file"/a fi\
-#}\
+}\
 '\'' "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_step_extract_package.sh\
 cat "${REPOROOT}/${BUILD_ENVIRONMENT}"/scripts/build/termux_step_extract_package.sh\
 
