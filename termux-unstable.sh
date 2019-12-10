@@ -76,7 +76,7 @@ if [[ $file =~ '"$geckodriver_version"' ]]; then\\\
 #s/\\(tar\ xf\ "$file"\ -C\ \\)"$TERMUX_PKG_SRCDIR"/\\1"$TERMUX_TOPDIR\\\/$TERMUX_PKG_NAME"/\\\
 #a \\\
 #mv "$TERMUX_TOPDIR/$TERMUX_PKG_NAME"/geckodriver "$TERMUX_PKG_SRCDIR"\\\
-tar\ xf\ "$file"\ -C\ "$TERMUX_TOPDIR/$TERMUX_PKG_NAME"/\\\
+tar\ xf\ "$file"\ -C\ "$TERMUX_TOPDIR/$TERMUX_PKG_NAME"/ --strip-components=$STRIP\\\
 mv "$TERMUX_TOPDIR/$TERMUX_PKG_NAME"/geckodriver "$TERMUX_PKG_SRCDIR"\\\
 pwd && ls -alh\\\
 ls -alh "$TERMUX_PKG_SRCDIR"\\\
