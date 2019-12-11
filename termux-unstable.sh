@@ -92,7 +92,7 @@ cat ./start-builder.sh
 source ./start-builder.sh
 docker exec --tty "$CONTAINER_NAME" pwd
 docker exec --tty "$CONTAINER_NAME" ls -al
-docker exec --tty "$CONTAINER_NAME" bash -x ./build-package.sh -a ${arch} -D ${package_name}
+docker exec --tty "$CONTAINER_NAME" bash -x ./build-package.sh -a ${arch} ${package_name}
 docker exec --tty "$CONTAINER_NAME" ls -al
 pwd
 ls -al
