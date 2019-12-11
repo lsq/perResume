@@ -1,6 +1,6 @@
 arch="aarch64"
-# package_name=geckodriver
-package_name=ghc
+package_name=geckodriver
+# package_name=ghc
 sed --version
 git clone https://github.com/termux/unstable-packages
 cd ./unstable-packages
