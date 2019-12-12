@@ -12,9 +12,9 @@ environment:
 
     #secure: zt43vh97KFrDRrWr0I4KT435t2Qkqckh33yDFzyMUoJcWY0p+nJiLbt+b4egl34n
     #secure: 855kciMXrCGEcKW+P87C5nMrvYN47FH/Zjz9yHjZ53yeijLyb6/0oZ4CVv7j0VbE
-  matrix:
-    - MSYS2_ARCH: x86_64
-      MSYSTEM: MINGW64
+  #matrix:
+   # - MSYS2_ARCH: x86_64
+   #   MSYSTEM: MINGW64
  #   - MSYS2_ARCH: i686
  #     MSYSTEM: MINGW32
 # Set path for msys
@@ -73,7 +73,7 @@ build_script:
     #- bash -x aria_build.sh
     #- bash -x texlive.sh
     #- bash -x htmltomd.sh
-  - bash -x termux-unstable.sh
+ # - bash -x termux-unstable.sh
 artifacts:
   - path: $APPVEYOR_JOB_ID
     #- path: src-
