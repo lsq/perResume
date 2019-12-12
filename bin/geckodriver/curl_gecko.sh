@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 drfile="geckodriver-linux.tar.gz"
-wget -c -o $drfile https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
+wget -c -O $drfile https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
 ls -alh && file $drfile
 tar xf $drfile && sudo cp geckodriver /usr/bin
 geckodriver &
