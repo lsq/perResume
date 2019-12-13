@@ -4,8 +4,11 @@ drfile="geckodriver-linux.tar.gz"
 wget -c -O $drfile https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
 ls -alh && file $drfile
 tar xf $drfile && sudo cp geckodriver /usr/bin
+which firefox
 geckodriver &
 sleep 10s
+ps aux | grep geckodriver
+netstat -ntlp 
 # [1] 16010
 # % 1491834109194   geckodriver     INFO    Listening on 127.0.0.1:4444
 curl -vd '{"capabilities": {"alwaysMatch": {"acceptInsecureCerts": true}}}' http://localhost:4444/session
