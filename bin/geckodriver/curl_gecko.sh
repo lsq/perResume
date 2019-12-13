@@ -5,13 +5,13 @@ wget -c -O $drfile https://github.com/mozilla/geckodriver/releases/download/v0.2
 ls -alh && file $drfile
 tar xf $drfile && sudo cp geckodriver /usr/bin
 which firefox
-geckodriver &
+geckodriver -vv &
 sleep 10s
 ps aux | grep geckodriver
 uname -a
 apt search netstat
 firefox --version
-netstat -ntlp 
+# netstat -ntlp 
 # [1] 16010
 # % 1491834109194   geckodriver     INFO    Listening on 127.0.0.1:4444
 curl -vd '{"capabilities": {"alwaysMatch": {"acceptInsecureCerts": true}}}' http://localhost:4444/session
