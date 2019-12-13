@@ -8,6 +8,9 @@ which firefox
 geckodriver &
 sleep 10s
 ps aux | grep geckodriver
+uname -a
+apt search netstat
+firefox --version
 netstat -ntlp 
 # [1] 16010
 # % 1491834109194   geckodriver     INFO    Listening on 127.0.0.1:4444
