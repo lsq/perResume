@@ -19,7 +19,7 @@ environment:
  #     MSYSTEM: MINGW32
 # Set path for msys
 init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
   - pwd
   - ls -al .
   - export MANPATH=/usr/local/texlive/2019/texmf-dist/doc/man:$MANPATH
@@ -126,4 +126,5 @@ on_success:
 #   - git push -u origin %TARGET_BRANCH%
     - appveyor AddMessage "Static Site Updated"
   on_finish:
-    - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    - sh: export APPVEYOR_SSH_BLOCK=true
+    - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
