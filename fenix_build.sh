@@ -6,7 +6,7 @@ java -version
 sudo apt install android-sdk -y
 
 
-
+which sdkmanager
 To install it on a Debian based system simply do
 
 # Install latest JDK
@@ -21,7 +21,7 @@ curl -vLSs https://dl.google.com/android/repository
 wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 
 # unpack archive
-unzip sdk-tools-linux-4333796.zip
+unzip -oq sdk-tools-linux-4333796.zip
 
 rm sdk-tools-linux-4333796.zip
 
@@ -34,7 +34,7 @@ export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # Show all available sdk packages
-
+which  sdkmanager
 sdkmanager --list
 
 # Identify latest android platform (here it's 28) and run
