@@ -3,21 +3,21 @@ unzip -oq android-ndk-r20-linux-x86_64.zip
 
 java -version
 
-sudo apt install android-sdk -y
+# sudo apt install android-sdk -y
 
 
-which sdkmanager
-To install it on a Debian based system simply do
+# which sdkmanager
+# To install it on a Debian based system simply do
 
 # Install latest JDK
-# sudo apt install default-jdk
+sudo apt install default-jdk -y
 
 # install unzip if not installed yet
 # sudo apt install unzip
 
 # get latest sdk tools - link will change. go to https://developer.android.com/studio/#downloads to get the latest one
 cd ~
-curl -vLSs https://dl.google.com/android/repository
+# curl -vLSs https://dl.google.com/android/repository
 wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 
 # unpack archive
@@ -39,7 +39,7 @@ sdkmanager --list
 
 # Identify latest android platform (here it's 28) and run
 
-# sdkmanager "platform-tools" "platforms;android-28"
+sdkmanager "platform-tools" "platforms;android-29"
 
 # Now you have adb, fastboot and the latest sdk tools installed
 
