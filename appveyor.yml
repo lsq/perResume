@@ -75,7 +75,8 @@ build_script:
     #- bash -x texlive.sh
     #- bash -x htmltomd.sh
  # - bash -x termux-unstable.sh
-  - bash -x bin/geckodriver/curl_gecko.sh
+  #- bash -x bin/geckodriver/curl_gecko.sh
+  - bash -x fenix_build.sh
 artifacts:
   - path: $APPVEYOR_JOB_ID
     #- path: src-
