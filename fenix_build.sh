@@ -19,15 +19,18 @@ update-java-alternatives -l
 # sudo apt install default-jdk -y
 apt search openjdk
 java -version
-ls /usr/lib/jvm/
+ls -ahl /usr/lib/jvm/
 for i in /usr/lib/jvm/*; do
   #[ -d "$i/bin" ] && ls -alh $i/bin
   $i/bin/java -version
 done
 
 update-java-alternatives -l
-export $Java_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export Java_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 echo $PATH
+echo $JAVA_HOME
+update-java-alternatives -l
+update-alternatives --list java
 # install unzip if not installed yet
 # sudo apt install unzip
 
