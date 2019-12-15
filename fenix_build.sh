@@ -3,6 +3,10 @@
 
 java -version
 
+update-alternatives --display java
+
+ echo $JAVA_HOME
+ 
 # sudo apt install android-sdk -y
 
 
@@ -11,10 +15,10 @@ java -version
 
 # Install latest JDK
 # sudo apt install default-jdk -y
-java --version
+java -version
 ls /usr/lib/jvm/
 for i in /usr/lib/jvm/*; do
-  [ -d "$i" ] && ls -alh $i
+  [ -d "$i/bin" ] && ls -alh $i
 done
 # install unzip if not installed yet
 # sudo apt install unzip
