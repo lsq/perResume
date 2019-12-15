@@ -1,5 +1,5 @@
-wget -c https://dl.google.com/android/repository/android-ndk-r20-linux-x86_64.zip
-unzip -oq android-ndk-r20-linux-x86_64.zip
+# wget -c https://dl.google.com/android/repository/android-ndk-r20-linux-x86_64.zip
+# unzip -oq android-ndk-r20-linux-x86_64.zip
 
 java -version
 
@@ -10,16 +10,19 @@ java -version
 # To install it on a Debian based system simply do
 
 # Install latest JDK
-sudo apt install default-jdk -y
+# sudo apt install default-jdk -y
 java --version
 ls /usr/lib/jvm/
+for i in /usr/lib/jvm/*; do
+  [ -d "$i" ] && ls -alh $i
+done
 # install unzip if not installed yet
 # sudo apt install unzip
 
 # get latest sdk tools - link will change. go to https://developer.android.com/studio/#downloads to get the latest one
 cd ~
 # curl -vLSs https://dl.google.com/android/repository
-wget -c https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+# wget -c https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 
 # unpack archive
 unzip -oq sdk-tools-linux-4333796.zip
