@@ -26,7 +26,7 @@ for i in /usr/lib/jvm/*; do
 done
 
 update-java-alternatives -l
-export Java_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 echo $PATH
 echo $JAVA_HOME
 update-java-alternatives -l
