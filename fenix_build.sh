@@ -1,3 +1,7 @@
+java_version=8
+openjdk=java-${java_version}-openjdk-amd64
+patht=$(sed -n 's@java-[0-9]\{1,2\}-openjdk-amd64@'$openjdk'@/p' <<< "$PATH")
+echo $PATH
 # wget -c https://dl.google.com/android/repository/android-ndk-r20-linux-x86_64.zip
 # unzip -oq android-ndk-r20-linux-x86_64.zip
 
