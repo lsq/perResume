@@ -1,7 +1,7 @@
 java_version=8
 openjdk=java-${java_version}-openjdk-amd64
-patht=$(sed -n 's@java-[0-9]\{1,2\}-openjdk-amd64@'$openjdk'@/p' <<< "$PATH")
-echo $PATH
+patht=$(sed -n 's@java-[0-9]\{1,2\}-openjdk-amd64@'$openjdk'@p' <<< "$PATH")
+echo $patht 
 # wget -c https://dl.google.com/android/repository/android-ndk-r20-linux-x86_64.zip
 # unzip -oq android-ndk-r20-linux-x86_64.zip
 
@@ -33,6 +33,8 @@ update-java-alternatives -l
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 echo $PATH
 echo $JAVA_HOME
+echo $CLASSPATH
+
 update-java-alternatives -l
 update-alternatives --list java
 # install unzip if not installed yet
