@@ -15,10 +15,12 @@ update-alternatives --display java
 
 # Install latest JDK
 # sudo apt install default-jdk -y
+apt search openjdk
 java -version
 ls /usr/lib/jvm/
 for i in /usr/lib/jvm/*; do
-  [ -d "$i/bin" ] && ls -alh $i
+  [ -d "$i/bin" ] && ls -alh $i/bin
+  $i/bin/java -version
 done
 # install unzip if not installed yet
 # sudo apt install unzip
