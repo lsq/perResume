@@ -11,14 +11,15 @@ java -version
 
 # Install latest JDK
 sudo apt install default-jdk -y
-
+java --version
+ls /usr/lib/jvm/
 # install unzip if not installed yet
 # sudo apt install unzip
 
 # get latest sdk tools - link will change. go to https://developer.android.com/studio/#downloads to get the latest one
 cd ~
 # curl -vLSs https://dl.google.com/android/repository
-wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+wget -c https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 
 # unpack archive
 unzip -oq sdk-tools-linux-4333796.zip
