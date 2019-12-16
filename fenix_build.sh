@@ -21,13 +21,13 @@ update-java-alternatives -l
 # Install latest JDK
 # sudo apt install default-jdk -y
 # apt search openjdk
-java -version
+# java -version
 ls -ahl /usr/lib/jvm/
 for i in /usr/lib/jvm/*; do
   #[ -d "$i/bin" ] && ls -alh $i/bin
   $i/bin/java -version
 done
-if update-java-alternatives -l|grep $openjdk; then
+if update-alternatives --list java|grep $openjdk; then
   export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
   echo $JAVA_HOME
   echo $CLASSPATH
