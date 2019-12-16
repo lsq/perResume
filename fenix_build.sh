@@ -78,4 +78,4 @@ yes | sdkmanager --licenses
 git clone https://github.com/mozilla-mobile/fenix
 cd fenix
 ./gradlew clean app:assembleGeckoBetaDebug
-find . -name '*.apk'
+find . -name '*.apk' -exec cp  {} $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/ \;
