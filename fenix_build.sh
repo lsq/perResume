@@ -68,7 +68,8 @@ sdkmanager --list
 
 # Identify latest android platform (here it's 28) and run
 
-sdkmanager "platform-tools" "platforms;android-29"
+yes|sdkmanager "platform-tools" "platforms;android-29"
+yes | sdkmanager --licenses
 
 # Now you have adb, fastboot and the latest sdk tools installed
 
