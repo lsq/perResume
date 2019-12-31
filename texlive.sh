@@ -81,13 +81,22 @@ else
   mkdir -p ~/.local/share/fonts
   cp * ~/.local/share/fonts/
 fi
-cd $APPVEYOR_BUILD_FOLDER/cv
+
+cd $APPVEYOR_BUILD_FOLDER/tex/
+cp *.ttf ~/.local/share/fonts/
 
 sudo mkfontscale
 sudo mkfontdir
 sudo fc-cache -fv
+
+xelatex fy.tex
+cp fy.pdf $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/
+
 #cat cv-zh.tex
+cd $APPVEYOR_BUILD_FOLDER/cv
 xelatex cv-zh.tex
+
+
 cp cv-zh.pdf $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/
 sleep 1
 
