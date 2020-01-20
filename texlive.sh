@@ -57,7 +57,8 @@ echo "====================="
 echo "begin install........"
 #net_install http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 start_time=$(date +%s)
-iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
+# iso_install http://mirror.ctan.org/systems/texlive/Images/texlive.iso
+iso_install http://mirror.utexas.edu/ctan/systems/texlive/Images/texlive.iso
 echo "====================="
 end_time=$(date +%s)
 cost_time=$((end_time-start_time))
