@@ -83,12 +83,19 @@ else
 fi
 
 cd $APPVEYOR_BUILD_FOLDER/tex/
+svn checkout https://github.com/lsq/officetools/trunk/tex
+ls -al .
 cp *.ttf ~/.local/share/fonts/
+cd tex
+cp *.ttf ~/.local/share/fonts/
+# svn checkout https://github.com/lsq/officetools/trunk/tex
+
 
 sudo mkfontscale
 sudo mkfontdir
 sudo fc-cache -fv
 
+cd $APPVEYOR_BUILD_FOLDER/tex/
 xelatex fy.tex
 cp fy.pdf $APPVEYOR_BUILD_FOLDER/$APPVEYOR_JOB_ID/
 
