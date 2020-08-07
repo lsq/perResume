@@ -22,9 +22,9 @@ init:
   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
   - pwd
   - ls -al .
-  - export MANPATH=/usr/local/texlive/2019/texmf-dist/doc/man:$MANPATH
-  - export INFOPATH=/usr/local/texlive/2019/texmf-dist/doc/info:$INFOPATH
-  - export PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH
+  - export MANPATH=/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH
+  - export INFOPATH=/usr/local/texlive/2020/texmf-dist/doc/info:$INFOPATH
+  - export PATH=/usr/local/texlive/2020/bin/x86_64-linux:$PATH
   - export ANDROID_NDK_HOME=~/android-ndk-r20
   - export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
   - export SILENT=true
@@ -128,4 +128,5 @@ on_success:
     - appveyor AddMessage "Static Site Updated"
 on_finish:
     - sh: export APPVEYOR_SSH_BLOCK=true
+    - sh: sleep 60m
    # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
