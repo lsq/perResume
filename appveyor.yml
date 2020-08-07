@@ -9,6 +9,9 @@ environment:
     secure: wX822g4t5xXPI86jW/Oy7g==
   TEX_KEY:
     secure: V6as8a77xjng+RBnWYjvAw==
+    
+  nodejs_version: "14"
+
 
     #secure: zt43vh97KFrDRrWr0I4KT435t2Qkqckh33yDFzyMUoJcWY0p+nJiLbt+b4egl34n
     #secure: 855kciMXrCGEcKW+P87C5nMrvYN47FH/Zjz9yHjZ53yeijLyb6/0oZ4CVv7j0VbE
@@ -67,7 +70,13 @@ install:
     #- cd ../../
   - cd $APPVEYOR_BUILD_FOLDER
   - df -h
-
+test_script:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # run tests
+  # - npm test
+  
 build_script:
   - echo $PATH
   - ls -al .
