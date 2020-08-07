@@ -9,8 +9,9 @@ environment:
     secure: wX822g4t5xXPI86jW/Oy7g==
   TEX_KEY:
     secure: V6as8a77xjng+RBnWYjvAw==
-    
-  nodejs_version: "14"
+  matrix:
+    - nodejs_version: "14"  
+  
 
 
     #secure: zt43vh97KFrDRrWr0I4KT435t2Qkqckh33yDFzyMUoJcWY0p+nJiLbt+b4egl34n
@@ -25,9 +26,10 @@ init:
   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
   - pwd
   - ls -al .
+  - exprot NVM_BINN=/home/appveyor/.nvm/versions/node/v14.3.0/bin
   - export MANPATH=/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH
   - export INFOPATH=/usr/local/texlive/2020/texmf-dist/doc/info:$INFOPATH
-  - export PATH=/usr/local/texlive/2020/bin/x86_64-linux:$PATH
+  - export PATH=$NVM_BINN:/usr/local/texlive/2020/bin/x86_64-linux:$PATH
   - export ANDROID_NDK_HOME=~/android-ndk-r20
   - export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
   - export SILENT=true
