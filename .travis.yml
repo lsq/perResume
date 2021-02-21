@@ -6,4 +6,4 @@ python:
     #script:
   #  - bash -x tensorflow_travis.sh
 install:
-  - bash -x tensorflow_arm64.sh
+  - travis_retry bash -x tensorflow_arm64.sh
