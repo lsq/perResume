@@ -1,5 +1,5 @@
 version: 1.0.{build}
-image: Ubuntu1804
+image: Ubuntu
 environment:
   TARGET_BRANCH:
     secure: eQBPkReZ/mmjzNZaccrD3w==
@@ -27,9 +27,9 @@ init:
   - pwd
   - ls -al .
   - export NVM_BINN=/home/appveyor/.nvm/versions/node/v14.3.0/bin
-  - export MANPATH=/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH
-  - export INFOPATH=/usr/local/texlive/2020/texmf-dist/doc/info:$INFOPATH
-  - export PATH=$NVM_BINN:/usr/local/texlive/2020/bin/x86_64-linux:$PATH
+  - export MANPATH=/usr/local/texlive/2022/texmf-dist/doc/man:$MANPATH
+  - export INFOPATH=/usr/local/texlive/2022/texmf-dist/doc/info:$INFOPATH
+  - export PATH=$NVM_BINN:/usr/local/texlive/2022/bin/x86_64-linux:$PATH
   - export ANDROID_NDK_HOME=~/android-ndk-r20
   - export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
   - export SILENT=true
