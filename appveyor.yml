@@ -86,7 +86,7 @@ build_script:
  # - bash -x texlive.sh
   #- bash -x tensorflow_arm64.sh
     #- bash -x htmltomd.sh
-  - bash -x grub2FM.sh 
+  - bash -x grub2Fm.sh 
  # - bash -x termux-unstable.sh
   #- bash -x bin/geckodriver/curl_gecko.sh
   #- bash -x fenix_build.sh
