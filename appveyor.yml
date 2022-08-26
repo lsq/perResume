@@ -1,5 +1,5 @@
 version: 1.0.{build}
-image: Ubuntu
+image: Ubuntu2004
 environment:
   TARGET_BRANCH:
     secure: eQBPkReZ/mmjzNZaccrD3w==
