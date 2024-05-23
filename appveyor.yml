@@ -1,5 +1,5 @@
 version: 1.0.{build}
-image: Ubuntu2004
+image: Ubuntu2204
 environment:
   TARGET_BRANCH:
     secure: eQBPkReZ/mmjzNZaccrD3w==
@@ -10,7 +10,7 @@ environment:
   TEX_KEY:
     secure: V6as8a77xjng+RBnWYjvAw==
   matrix:
-    - nodejs_version: "14"  
+    - nodejs_version: "20"  
   
 
 
@@ -26,10 +26,10 @@ init:
   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
   - pwd
   - ls -al .
-  - export NVM_BINN=/home/appveyor/.nvm/versions/node/v14.3.0/bin
-  - export MANPATH=/usr/local/texlive/2022/texmf-dist/doc/man:$MANPATH
-  - export INFOPATH=/usr/local/texlive/2022/texmf-dist/doc/info:$INFOPATH
-  - export PATH=$NVM_BINN:/usr/local/texlive/2022/bin/x86_64-linux:$PATH
+  - export NVM_BINN=/home/appveyor/.nvm/versions/node/v20.11.1/bin
+  - export MANPATH=/usr/local/texlive/2024/texmf-dist/doc/man:$MANPATH
+  - export INFOPATH=/usr/local/texlive/2024/texmf-dist/doc/info:$INFOPATH
+  - export PATH=$NVM_BINN:/usr/local/texlive/2024/bin/x86_64-linux:$PATH
   - export ANDROID_NDK_HOME=~/android-ndk-r20
   - export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
   - export SILENT=true
